@@ -84,7 +84,7 @@ export default function ContactPage() {
     <Layout currentPage="contacts" renderHeader={false}>
       <section className="relative isolate overflow-hidden bg-slate-900 text-white">
         <img
-          src="/photos/dest-raja-ampat.jpg"
+          src="photos/dest-raja-ampat.jpg"
           alt="Indonesian coastline"
           className="absolute inset-0 h-full w-full object-cover opacity-60"
           loading="lazy"

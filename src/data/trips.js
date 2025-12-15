@@ -4,7 +4,7 @@ export const TRIP_OPTIONS = [
     title: "Bali + Nusa Penida",
     region: "Bali archipelago",
     duration: "7 days",
-    image: "/photos/dest-bali-penida.jpg",
+    image: "photos/dest-bali-penida.jpg",
     summary: "Temple sunsets, manta snorkeling, and cafe time split between Bali and Penida.",
     details: "Private driver on Bali, pre-booked fast boats, spa holds, and reserved tables so you can relax into the island rhythm.",
     highlights: [
@@ -27,7 +27,7 @@ export const TRIP_OPTIONS = [
     title: "Sumatra + Java volcano loop",
     region: "Sumatra & Java",
     duration: "9 days",
-    image: "/photos/dest-sumatra-java.jpg",
+    image: "photos/dest-sumatra-java.jpg",
     summary: "Rainforest wildlife in Sumatra paired with Java's volcano sunrises and heritage sites.",
     details: "Early starts for wildlife and sunrise views, domestic flights handled, and guides who pace hikes around comfort and weather.",
     highlights: [
@@ -52,7 +52,7 @@ export const TRIP_OPTIONS = [
     title: "Raja Ampat liveaboard",
     region: "West Papua",
     duration: "8 days",
-    image: "/photos/dest-raja-ampat.jpg",
+    image: "photos/dest-raja-ampat.jpg",
     summary: "Liveaboard through blue lagoons with manta dives, island hikes, and village stops.",
     details: "Small-boat crew handles dive gear, park fees, and weather calls so days stay easy.",
     highlights: [
@@ -76,7 +76,7 @@ export const TRIP_OPTIONS = [
     title: "Borneo rainforest & river",
     region: "Kalimantan",
     duration: "6 days",
-    image: "/photos/dest-kalimantan.jpg",
+    image: "photos/dest-kalimantan.jpg",
     summary: "Slow river cruise with orangutans, night walks, and canopy views.",
     details: "Private klotok boat with onboard chef, permits, and ranger slots reserved ahead of time.",
     highlights: [
@@ -98,7 +98,7 @@ export const TRIP_OPTIONS = [
     title: "Bali + Lombok + Gili islands",
     region: "Bali & Nusa Tenggara",
     duration: "8 days",
-    image: "/photos/dest-lombok-gili.jpg",
+    image: "photos/dest-lombok-gili.jpg",
     summary: "Split the week between Bali culture, Lombok waterfalls, and laid-back Gili reefs.",
     details: "Coordinated boats, drivers, and luggage handling between islands; mix of boutique stays and beach cabanas.",
     highlights: [
@@ -122,7 +122,7 @@ export const TRIP_OPTIONS = [
     title: "Flores + Komodo overland",
     region: "East Nusa Tenggara",
     duration: "7 days",
-    image: "/photos/dest-flores-komodo.jpg",
+    image: "photos/dest-flores-komodo.jpg",
     summary: "Overland from Komodo's islands to Flores highlands, ending at Kelimutu lakes.",
     details: "Private boat days with ranger escorts and overland drivers who know the best food stalls between ports and villages.",
     highlights: [
@@ -145,7 +145,7 @@ export const TRIP_OPTIONS = [
     title: "Maluku spice isles",
     region: "Maluku",
     duration: "8 days",
-    image: "/photos/dest-maluku.jpg",
+    image: "photos/dest-maluku.jpg",
     summary: "Historic spice islands, clear lagoons, and hammerhead dive season in Maluku.",
     details: "Seasonal hammerhead dives are timed to currents; flights and longboats are pre-booked so you can linger over forts and nutmeg tastings.",
     highlights: [
@@ -169,7 +169,7 @@ export const TRIP_OPTIONS = [
     title: "Sulawesi highlands & Togian seas",
     region: "Sulawesi",
     duration: "9 days",
-    image: "/photos/dest-sulawesi.jpg",
+    image: "photos/dest-sulawesi.jpg",
     summary: "Toraja highland culture blended with quiet reef days in the Togian Islands.",
     details: "Dedicated driver across the highlands, cultural liaison, and private boats across the Gulf of Tomini.",
     highlights: [
@@ -194,7 +194,7 @@ export const TRIP_OPTIONS = [
     title: "Papua highlands & lakes",
     region: "Papua",
     duration: "10 days",
-    image: "/photos/dest-papua.jpg",
+    image: "photos/dest-papua.jpg",
     summary: "Papua valley treks, highland villages, and time on Lake Sentani's painted-isle communities.",
     details: "Altitude-aware pacing, porter-supported treks, and community hosts arranged ahead of time for respectful visits.",
     highlights: [

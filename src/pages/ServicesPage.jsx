@@ -19,20 +19,20 @@ export default function ServicesPage() {
         {!prefersReducedMotion ? (
           <div className="absolute inset-0 -z-20">
             <video
-              src="/videos/island.mp4"
+              src="videos/island.mp4"
               className="h-full w-full object-cover"
               autoPlay
               muted
               loop
               playsInline
               preload="metadata"
-              poster="/photos/dest-lombok-gili.jpg"
+              poster="photos/dest-lombok-gili.jpg"
               aria-hidden="true"
             />
           </div>
         ) : (
           <img
-            src="/photos/dest-lombok-gili.jpg"
+            src="photos/dest-lombok-gili.jpg"
             alt="Island shoreline and clear water"
             className="absolute inset-0 -z-20 h-full w-full object-cover"
             loading="lazy"

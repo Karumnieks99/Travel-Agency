@@ -23,7 +23,7 @@ export default function Layout({ currentPage, children, renderHeader = true, hea
       <footer className="border-t border-slate-200 bg-white py-8">
         <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-center lg:flex-row lg:items-center lg:gap-6 lg:text-left">
           <div className="flex items-center gap-3">
-            <img src="/photos/logo.png" alt="Surga Indonesia Travel" className="h-9 w-9 rounded-lg object-cover" />
+            <img src="photos/logo.png" alt="Surga Indonesia Travel" className="h-9 w-9 rounded-lg object-cover" />
             <p className="whitespace-normal text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 leading-tight lg:whitespace-nowrap">
               Surga Indonesia Travel - Discover the Spirit of Indonesia
             </p>
