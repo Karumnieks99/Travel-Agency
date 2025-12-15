@@ -38,7 +38,7 @@ export default function SiteHeader({ currentPage, variant = "solid" }) {
     <header className={headerClasses}>
       <div className="mx-auto flex max-w-6xl items-center justify-between gap-4 px-6 h-20">
         <a href="index.html" className="group flex items-center gap-3 shrink-0" aria-label="Surga Indonesia Travel - Home">
-          <img src="/photos/logo.png" alt="Surga Indonesia Travel" className="h-14 md:h-16 w-auto object-contain" />
+          <img src="photos/logo.png" alt="Surga Indonesia Travel" className="h-14 md:h-16 w-auto object-contain" />
           <div className="flex flex-col justify-center leading-[1.05]">
             <p className={logoTitleClass}>Surga Indonesia Travel</p>
             <p className={logoSubtitleClass}>Travel Agency</p>

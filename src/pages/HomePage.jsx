@@ -6,7 +6,7 @@ import { HOLIDAY_GALLERY, HERO_BLURBS, RECOMMENDATIONS, VALUE_PROPS } from "../d
 import { buildContactHref } from "../utils/urls";
 
 export default function HomePage() {
-  const heroVideo = "/videos/bali-video.mp4";
+  const heroVideo = "videos/bali-video.mp4";
   const videoRef = useRef(null);
   const [videoDuration, setVideoDuration] = useState(null);
   const [videoFading, setVideoFading] = useState(true);
@@ -63,14 +63,14 @@ export default function HomePage() {
               loop
               playsInline
               preload="metadata"
-              poster="/photos/dest-bali-penida.jpg"
+              poster="photos/dest-bali-penida.jpg"
               style={{ opacity: videoFading ? 0 : 1, transition: "opacity 700ms ease" }}
               aria-hidden="true"
             />
           </div>
         ) : (
           <img
-            src="/photos/dest-bali-penida.jpg"
+            src="photos/dest-bali-penida.jpg"
             alt="Sunrise on an Indonesian cliffside"
             className="absolute inset-0 -z-20 h-full w-full object-cover"
             loading="lazy"
