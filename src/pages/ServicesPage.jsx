@@ -3,15 +3,28 @@ import Layout from "../components/Layout";
 import SiteHeader from "../components/SiteHeader";
 import TripDetailModal from "../components/TripDetailModal";
 import usePrefersReducedMotion from "../hooks/usePrefersReducedMotion";
-import { EXPERIENCE_TYPES, INCLUSIONS, TIMELINE_STEPS, TRIP_OPTIONS } from "../data/trips";
+import { INCLUSIONS, TIMELINE_STEPS, TRIP_OPTIONS } from "../data/trips";
 import { buildContactHref } from "../utils/urls";
 
 export default function ServicesPage() {
   const [activeTrip, setActiveTrip] = useState(null);
   const prefersReducedMotion = usePrefersReducedMotion();
 
-  const handleTripOpen = (trip) => setActiveTrip(trip);
+  const handleTripOpen = (trip) => {
+    setActiveTrip(trip);
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, behavior: prefersReducedMotion ? "auto" : "smooth" });
+    }
+  };
   const handleTripClose = () => setActiveTrip(null);
+
+  if (activeTrip) {
+    return (
+      <Layout currentPage="trips">
+        <TripDetailModal trip={activeTrip} onClose={handleTripClose} />
+      </Layout>
+    );
+  }
 
   return (
     <Layout currentPage="trips" renderHeader={false}>
@@ -137,15 +150,15 @@ export default function ServicesPage() {
       <section id="inclusions" className="bg-gradient-to-b from-white via-amber-50/40 to-white py-16">
         <div className="mx-auto max-w-6xl px-6">
           <div className="flex flex-wrap items-start justify-between gap-4">
-            <div className="space-y-3">
-              <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-800 ring-1 ring-amber-200">
-                Included in every trip
+              <div className="space-y-3">
+                <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-800 ring-1 ring-amber-200">
+                  Included in every trip
+                </div>
+                <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">We run logistics so you can stay in the moment.</h2>
+                <p className="max-w-3xl text-slate-600">
+                Boats, drivers, guides, permits, and stays are pre-arranged with weather buffers and one point of contact before and during travel.
+                </p>
               </div>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">We run logistics so you can stay in the moment.</h2>
-              <p className="max-w-3xl text-slate-600">
-                Boats, drivers, guides, permits, and stays are pre-arranged with buffers for weather. You get one point of contact before and during travel.
-              </p>
-            </div>
             <div className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm ring-1 ring-amber-200/70">
               24/7 Bali-based support - Local partners only - Backups on every leg
             </div>
@@ -253,7 +266,6 @@ export default function ServicesPage() {
           </a>
         </div>
       </section>
-      <TripDetailModal trip={activeTrip} onClose={handleTripClose} />
     </Layout>
   );
 }
