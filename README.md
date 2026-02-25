@@ -68,4 +68,4 @@ public/
 
 ## Portfolio Note
 
-This project is intended as a front-end portfolio piece demonstrating practical product UI work: content-heavy page design, responsive layout decisions, and user-focused booking flows.
+This project reflects production-style front-end work focused on content-heavy page design, responsive layout decisions, and user-focused booking flows.
