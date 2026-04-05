@@ -178,9 +178,9 @@ export default function ContactPage() {
               <span aria-hidden>/</span>
               <span className="text-slate-100">Contacts</span>
             </nav>
-            <h1 className="mt-4 break-words text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Contact Surga Indonesia Travel</h1>
+            <h1 className="mt-4 break-words text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Talk to a planner.</h1>
             <p className="mt-3 max-w-3xl text-lg text-slate-100/90">
-              Speak directly with our Bali-based planners to request a booking, check availability, or shape a custom itinerary.
+              Based in Ubud. Replies within one business day. No automated responses — a real person handles every inquiry.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {QUICK_LINKS.map((item) => (
@@ -206,7 +206,7 @@ export default function ContactPage() {
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Visit or call</p>
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Planning desk & office details.</h2>
               <p className="max-w-3xl text-slate-600">
-                Drop by our Ubud office or set up a call. One desk handles new booking requests and another supports travelers currently on trip.
+                Walk in or call ahead. One desk for new trips, one line for travelers already on the ground.
               </p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 shadow-sm">
@@ -301,9 +301,9 @@ export default function ContactPage() {
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Write to us</p>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Send a booking request.</h2>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Send us the details.</h2>
               <p className="text-slate-600">
-                Share dates, group size, and your preferred route. A planner confirms availability and final price before any payment.
+                Dates, group size, and a rough idea of where you want to go. That's enough to start. Price and availability confirmed before anything is locked.
               </p>
               {bookingPrefill.tripName ? (
                 <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">

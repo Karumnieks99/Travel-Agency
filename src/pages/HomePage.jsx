@@ -212,7 +212,7 @@ export default function HomePage() {
           <SiteHeader currentPage="home" variant="overlay" />
           <div className="mx-auto flex max-w-6xl flex-col gap-10 px-4 pb-16 pt-20 sm:px-6 sm:pt-24 lg:flex-row lg:items-center lg:pb-24 lg:pt-28">
             <div className="flex-1 space-y-6 text-white">
-              <h1 className="text-3xl font-semibold leading-tight sm:text-5xl lg:text-6xl">Visit Indonesia</h1>
+              <h1 className="text-4xl sm:text-6xl lg:text-7xl font-semibold leading-[1.02] tracking-tight">The islands are waiting.</h1>
             </div>
           </div>
         </div>
@@ -224,8 +224,8 @@ export default function HomePage() {
           <div className="mx-auto max-w-6xl px-4 space-y-8 sm:px-6">
             <div className="rounded-2xl bg-white p-6 text-slate-900 shadow-lg ring-1 ring-amber-100/80 sm:p-8">
               <div className="text-center">
-                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Destination recommendations</p>
-                <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Confident picks for your next trip.</h2>
+                <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-800">Handpicked routes</p>
+                <h2 className="mt-2 text-3xl font-semibold tracking-tight sm:text-4xl">Routes worth rearranging your year for.</h2>
                 <p className="mt-2 text-sm text-slate-500">Availability updated {formatUpdatedDate(AVAILABILITY_LAST_UPDATED)}</p>
               </div>
               <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
@@ -281,8 +281,8 @@ export default function HomePage() {
             <div className="rounded-2xl bg-slate-900 p-6 text-white shadow-lg ring-1 ring-slate-800 sm:p-8">
               <div className="grid gap-6 lg:grid-cols-[1fr_1fr] lg:items-start">
                 <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Guest proof</p>
-                  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Travelers trust us for smooth logistics.</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Who travels with us</p>
+                  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Every detail handled before you land.</h2>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {TRUST_STATS.map((item) => (
                       <article key={item.label} className="rounded-xl bg-white/10 p-4 ring-1 ring-white/10">
@@ -308,23 +308,23 @@ export default function HomePage() {
             <div className="rounded-2xl bg-white p-6 shadow-lg ring-1 ring-slate-200 sm:p-8">
               <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-center">
                 <div className="space-y-4">
-                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Travel and enjoy your holiday</p>
-                  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Choose your fun holiday</h2>
+                  <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">What's included</p>
+                  <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Indonesia, done properly.</h2>
                   <p className="text-slate-600">
-                    Tiny islands sit in rings of glassy water. Villages welcome you in, the sea glows turquoise, and every day ends with a slow sunset.
+                    Boats leave on time. Guides know the back roads. You show up and the day is already arranged from the morning coffee to the ferry that gets you there before the light drops.
                   </p>
                   <div className="flex flex-col gap-3 text-sm text-slate-700">
                     <div className="flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-amber-600" aria-hidden />
-                      Tailored island-hopping itineraries with local guides.
+                      Island-hopping routes timed around tides and ferries, not guesswork.
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-amber-600" aria-hidden />
-                      Private boat charters and sunrise summit hikes.
+                      Private boats, summit hikes, and reef dives booked ahead of arrival.
                     </div>
                     <div className="flex items-center gap-2">
                       <span className="h-2 w-2 rounded-full bg-amber-600" aria-hidden />
-                      Reef-safe diving, snorkeling, and cultural tours.
+                      One WhatsApp line to your planner from first inquiry to last transfer.
                     </div>
                   </div>
                   <div className="flex flex-col gap-3 sm:flex-row">
@@ -338,7 +338,7 @@ export default function HomePage() {
                       className="inline-flex items-center justify-center rounded-lg border border-slate-200 px-5 py-3 text-sm font-semibold text-slate-900 shadow-sm transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500"
                       href="#recommendations"
                     >
-                      View destinations
+                      Browse routes
                     </a>
                   </div>
                 </div>

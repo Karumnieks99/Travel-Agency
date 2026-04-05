@@ -215,9 +215,9 @@ export default function ServicesPage() {
               <p className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-amber-100 ring-1 ring-white/20">
                 Trips & routes
               </p>
-              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Indonesia trips crafted end-to-end.</h1>
+              <h1 className="text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Thirteen thousand islands. Pick yours.</h1>
               <p className="text-lg text-slate-100">
-                Tell us the islands on your mind. We line up boats, drivers, and guides with buffers so you can wake up and wander.
+                Tell us where you want to go. We handle the boats, permits, and drivers — so nothing falls through between islands.
               </p>
               <div className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <a
@@ -241,9 +241,9 @@ export default function ServicesPage() {
       <section id="routes" className="mx-auto max-w-6xl px-4 py-12 sm:px-6">
         <div className="space-y-3">
           <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Signature trips</p>
-          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Pick a route and we will tailor it to your crew.</h2>
+          <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Every route is a starting point.</h2>
           <p className="max-w-3xl text-slate-600">
-            Start with a route that already flows, then stretch the stays, ferry times, and guides so it matches how you like to travel.
+            Pick the shape of a trip, then pull it apart. Add days, swap islands, or slow it down. We rebuild the logistics around your changes.
           </p>
         </div>
         <div className="mt-6 rounded-2xl border border-slate-200 bg-slate-50/80 p-4 shadow-sm">
@@ -437,9 +437,9 @@ export default function ServicesPage() {
                 <div className="inline-flex items-center gap-2 rounded-full bg-amber-100 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em] text-amber-800 ring-1 ring-amber-200">
                   Included in every trip
                 </div>
-                <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">We run logistics so you can stay in the moment.</h2>
+                <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">You travel. We manage the moving parts.</h2>
                 <p className="max-w-3xl text-slate-600">
-                Boats, drivers, guides, permits, and stays are pre-arranged with weather buffers and one point of contact before and during travel.
+                Ferries booked with backup options. Drivers confirmed the night before. Guides vetted and briefed. One person responsible for the whole thing.
                 </p>
               </div>
             <div className="rounded-2xl bg-white px-4 py-3 text-sm font-semibold text-slate-800 shadow-sm ring-1 ring-amber-200/70">
@@ -502,7 +502,7 @@ export default function ServicesPage() {
         <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="space-y-3">
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">How planning works</p>
-            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">One itinerary, built together.</h2>
+            <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">How a trip comes together.</h2>
           </div>
           <ol className="mt-8 grid gap-4 md:grid-cols-2">
             {TIMELINE_STEPS.map((step, index) => (
@@ -537,7 +537,7 @@ export default function ServicesPage() {
           <div className="flex flex-wrap items-center justify-between gap-4">
             <div>
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-200">Social proof</p>
-              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Why travelers book through us.</h2>
+              <h2 className="text-2xl font-semibold tracking-tight sm:text-3xl">Numbers from the field.</h2>
             </div>
             <AppLink
               className="inline-flex items-center justify-center rounded-lg border border-white/30 px-4 py-2 text-sm font-semibold text-white transition hover:bg-white/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-200"
@@ -561,10 +561,10 @@ export default function ServicesPage() {
       <section className="bg-amber-50 py-12">
         <div className="mx-auto flex max-w-6xl flex-col items-start justify-between gap-6 px-4 sm:px-6 lg:flex-row lg:items-center">
           <div className="space-y-3">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Need a custom route?</p>
-            <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Let us shape the right Indonesia trip together.</h2>
+            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-amber-700">Something different in mind?</p>
+            <h2 className="text-3xl font-semibold tracking-tight text-slate-900 sm:text-4xl">Tell us the rough idea. We'll build around it.</h2>
             <p className="max-w-2xl text-slate-700">
-              Mix islands, add free days, or build around a celebration. We will propose a route and handle the moving pieces.
+              Bring a date range and a list of islands. We come back with a route, a price, and a plan — nothing locked until you say so.
             </p>
           </div>
           <AppLink
