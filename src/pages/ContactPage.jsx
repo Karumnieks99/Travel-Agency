@@ -1,21 +1,90 @@
 import React, { useMemo, useState } from "react";
+import { useSearchParams } from "react-router-dom";
+import AppLink from "../components/AppLink";
 import Layout from "../components/Layout";
+import OptimizedImage from "../components/OptimizedImage";
 import SiteHeader from "../components/SiteHeader";
 import { HOURS, QUICK_LINKS } from "../data/contact";
 import { CONTACT_ENDPOINT } from "../config";
+import {
+  buildAbsoluteUrl,
+  createBreadcrumbSchema,
+  createTravelAgencySchema,
+  createWebPageSchema,
+  usePageSeo,
+} from "../utils/seo";
+
+const CONTACT_TITLE = "Contact Surga Indonesia Travel";
+const CONTACT_DESCRIPTION =
+  "Contact Surga Indonesia Travel to request booking support, availability checks, or custom Indonesia route planning.";
 
 export default function ContactPage() {
-  const [feedback, setFeedback] = useState({ status: null, message: "We reply within one business day." });
+  const [feedback, setFeedback] = useState({ status: null, message: "We confirm availability and next steps within one business day." });
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [searchParams] = useSearchParams();
+  const seoSchema = useMemo(() => {
+    const homeUrl = buildAbsoluteUrl("");
+    const pageUrl = buildAbsoluteUrl("support.html");
 
-  const tripFromQuery = useMemo(() => {
-    if (typeof window === "undefined") return "";
-    const params = new URLSearchParams(window.location.search);
-    return params.get("trip") || "";
+    return [
+      createTravelAgencySchema(),
+      createWebPageSchema({
+        url: pageUrl,
+        title: CONTACT_TITLE,
+        description: CONTACT_DESCRIPTION,
+        image: "photos/dest-raja-ampat.jpg",
+        pageType: "ContactPage",
+      }),
+      createBreadcrumbSchema([
+        { name: "Home", url: homeUrl },
+        { name: "Contact", url: pageUrl },
+      ]),
+    ];
   }, []);
 
-  const defaultTopic = tripFromQuery ? `Trip: ${tripFromQuery}` : "";
-  const defaultMessage = tripFromQuery ? `Interested in the ${tripFromQuery} route.` : "";
+  const bookingPrefill = useMemo(() => {
+    const tripId = searchParams.get("trip") || "";
+    const tripNameFromQuery = searchParams.get("trip_name") || "";
+    const departure = searchParams.get("departure") || "";
+    const travelMonth = searchParams.get("travel_month") || "";
+    const source = searchParams.get("source") || "";
+    const requestType = searchParams.get("request_type") || "booking";
+    const topicFromQuery = searchParams.get("topic") || "";
+
+    const tripNameFallback = tripId
+      ? tripId
+          .split("-")
+          .map((chunk) => chunk.charAt(0).toUpperCase() + chunk.slice(1))
+          .join(" ")
+      : "";
+    const tripName = tripNameFromQuery || tripNameFallback;
+    const defaultTopic = topicFromQuery || (tripName ? `${requestType === "waitlist" ? "Waitlist" : "Booking request"}: ${tripName}` : "");
+    const defaultMessage = tripName
+      ? `I would like to ${requestType === "waitlist" ? "join the waitlist for" : "request booking for"} the ${tripName} route.${
+          departure ? ` Preferred departure: ${departure}.` : ""
+        }`
+      : "";
+
+    return {
+      tripId,
+      tripName,
+      departure,
+      travelMonth,
+      source,
+      requestType,
+      defaultTopic,
+      defaultMessage,
+    };
+  }, [searchParams]);
+
+  usePageSeo({
+    title: CONTACT_TITLE,
+    description: CONTACT_DESCRIPTION,
+    path: "support.html",
+    image: "photos/dest-raja-ampat.jpg",
+    imageAlt: "Indonesian island coastline",
+    schema: seoSchema,
+  });
 
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -46,10 +115,15 @@ export default function ContactPage() {
         name: data.get("name"),
         email: data.get("email"),
         phone: data.get("phone") || "",
-        topic: data.get("topic") || defaultTopic,
+        travelMonth: data.get("travel_month") || bookingPrefill.travelMonth || "",
+        travelers: data.get("travelers") || "",
+        topic: data.get("topic") || bookingPrefill.defaultTopic,
         message: data.get("message"),
-        trip: tripFromQuery,
-        source: "contacts-page",
+        tripId: bookingPrefill.tripId,
+        tripName: bookingPrefill.tripName,
+        departureDate: bookingPrefill.departure,
+        requestType: bookingPrefill.requestType,
+        source: bookingPrefill.source || "contacts-page",
       };
 
       const response = await fetch(CONTACT_ENDPOINT, {
@@ -67,7 +141,7 @@ export default function ContactPage() {
 
       setFeedback({
         status: "success",
-        message: "Thanks for your note. A planner will reply within one business day from Bali.",
+        message: "Booking request received. A planner will confirm availability, pricing, and deposit steps within one business day from Bali.",
       });
       form.reset();
     } catch (error) {
@@ -83,26 +157,30 @@ export default function ContactPage() {
   return (
     <Layout currentPage="contacts" renderHeader={false}>
       <section className="relative isolate overflow-hidden bg-slate-900 text-white">
-        <img
+        <OptimizedImage
           src="photos/dest-raja-ampat.jpg"
           alt="Indonesian coastline"
           className="absolute inset-0 h-full w-full object-cover opacity-60"
-          loading="lazy"
+          loading="eager"
+          fetchPriority="high"
+          decoding="async"
+          width="1080"
+          height="709"
         />
         <div className="absolute inset-0 bg-gradient-to-br from-slate-900 via-slate-900/80 to-amber-900/60" aria-hidden />
         <div className="relative z-10">
           <SiteHeader currentPage="contacts" variant="overlay" />
-          <div className="mx-auto max-w-6xl px-6 pb-16 pt-20 lg:pb-20 lg:pt-24">
+          <div className="mx-auto max-w-6xl px-4 pb-16 pt-16 sm:px-6 sm:pt-20 lg:pb-20 lg:pt-24">
             <nav className="flex items-center gap-2 text-sm text-slate-100/80">
-              <a className="font-semibold hover:text-amber-200" href="index.html">
+              <AppLink className="font-semibold hover:text-amber-200" href="/">
                 Home
-              </a>
+              </AppLink>
               <span aria-hidden>/</span>
               <span className="text-slate-100">Contacts</span>
             </nav>
-            <h1 className="mt-4 text-4xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Contact Surga Indonesia Travel</h1>
+            <h1 className="mt-4 break-words text-3xl font-semibold leading-[1.05] tracking-tight sm:text-5xl">Contact Surga Indonesia Travel</h1>
             <p className="mt-3 max-w-3xl text-lg text-slate-100/90">
-              Speak directly with our Bali-based planners for trip questions, changes, or to start a new itinerary.
+              Speak directly with our Bali-based planners to request a booking, check availability, or shape a custom itinerary.
             </p>
             <div className="mt-8 grid gap-4 sm:grid-cols-3">
               {QUICK_LINKS.map((item) => (
@@ -122,13 +200,13 @@ export default function ContactPage() {
       </section>
 
       <section className="bg-white py-12">
-        <div className="mx-auto grid max-w-6xl gap-8 px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
+        <div className="mx-auto grid max-w-6xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.05fr_0.95fr] lg:items-start">
           <div className="space-y-6">
             <div className="space-y-2">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Visit or call</p>
               <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Planning desk & office details.</h2>
               <p className="max-w-3xl text-slate-600">
-                Drop by our Ubud office or set up a call. One desk focuses on new itineraries and another on guests already traveling.
+                Drop by our Ubud office or set up a call. One desk handles new booking requests and another supports travelers currently on trip.
               </p>
             </div>
             <div className="rounded-2xl border border-slate-200 bg-slate-50/70 p-6 shadow-sm">
@@ -185,6 +263,9 @@ export default function ContactPage() {
                   <li>
                     <span className="font-semibold text-slate-900">Notes</span>: Invoices issued in IDR or USD. Credit card links available on request.
                   </li>
+                  <li>
+                    <span className="font-semibold text-slate-900">Booking flow</span>: Date and price are finalized only after planner confirmation.
+                  </li>
                 </ul>
               </div>
             </div>
@@ -216,14 +297,22 @@ export default function ContactPage() {
       </section>
 
       <section id="contact" className="bg-slate-50 py-12">
-        <div className="mx-auto max-w-6xl px-6">
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
           <div className="grid gap-8 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
             <div className="space-y-4">
               <p className="text-xs font-semibold uppercase tracking-[0.2em] text-slate-500">Write to us</p>
-              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Send a message.</h2>
+              <h2 className="text-3xl font-semibold tracking-tight sm:text-4xl">Send a booking request.</h2>
               <p className="text-slate-600">
-                Tell us dates, group size, and the islands you have in mind. A planner will follow up by email or WhatsApp.
+                Share dates, group size, and your preferred route. A planner confirms availability and final price before any payment.
               </p>
+              {bookingPrefill.tripName ? (
+                <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-900">
+                  Prefilled from route: <span className="font-semibold">{bookingPrefill.tripName}</span>
+                  {bookingPrefill.departure ? (
+                    <span className="font-semibold"> (next departure {bookingPrefill.departure})</span>
+                  ) : null}
+                </div>
+              ) : null}
               <ul className="space-y-3 text-sm text-slate-700">
                 <li>
                   <span className="font-semibold text-slate-900">Private trips:</span> planning@surgaindonesia.travel
@@ -235,6 +324,14 @@ export default function ContactPage() {
                   <span className="font-semibold text-slate-900">Press & partners:</span> press@surgaindonesia.travel
                 </li>
               </ul>
+              <div className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
+                <p className="font-semibold">How confirmation works</p>
+                <ol className="mt-2 space-y-1 list-decimal list-inside">
+                  <li>You send dates, route, and traveler count.</li>
+                  <li>We confirm live availability and exact pricing.</li>
+                  <li>Booking is locked after deposit invoice payment.</li>
+                </ol>
+              </div>
             </div>
 
             <form
@@ -242,6 +339,7 @@ export default function ContactPage() {
               data-contact-form
               onSubmit={handleSubmit}
               noValidate
+              style={{ colorScheme: "light" }}
             >
               <div className="grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -250,7 +348,7 @@ export default function ContactPage() {
                     type="text"
                     name="name"
                     placeholder="Your name"
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
                     required
                   />
                 </label>
@@ -260,7 +358,7 @@ export default function ContactPage() {
                     type="email"
                     name="email"
                     placeholder="you@example.com"
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
                     required
                   />
                 </label>
@@ -270,7 +368,27 @@ export default function ContactPage() {
                     type="tel"
                     name="phone"
                     placeholder="+62 812 3456 7890"
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                  />
+                </label>
+                <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  <span>Travel month</span>
+                  <input
+                    type="text"
+                    name="travel_month"
+                    placeholder="e.g. June 2026"
+                    defaultValue={bookingPrefill.travelMonth}
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                  />
+                </label>
+                <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
+                  <span>Travelers</span>
+                  <input
+                    type="number"
+                    name="travelers"
+                    min="1"
+                    placeholder="2"
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
                   />
                 </label>
                 <label className="text-xs font-semibold uppercase tracking-[0.18em] text-slate-500">
@@ -279,8 +397,8 @@ export default function ContactPage() {
                     type="text"
                     name="topic"
                     placeholder="Trip idea, change, billing"
-                    defaultValue={defaultTopic}
-                    className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                    defaultValue={bookingPrefill.defaultTopic}
+                    className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
                   />
                 </label>
               </div>
@@ -289,9 +407,9 @@ export default function ContactPage() {
                 <textarea
                   name="message"
                   rows="5"
-                  placeholder="Share dates, travelers, and any must-see spots."
-                  defaultValue={defaultMessage}
-                  className="mt-2 w-full rounded-xl border border-slate-200 px-3 py-2 text-sm text-slate-900 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
+                  placeholder="Share route ideas, dates, flight city, and room preference."
+                  defaultValue={bookingPrefill.defaultMessage}
+                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2 text-sm text-slate-900 placeholder:text-slate-400 shadow-sm focus:border-amber-500 focus:outline-none focus:ring-2 focus:ring-amber-200"
                   required
                 />
               </label>
@@ -300,7 +418,7 @@ export default function ContactPage() {
                 type="submit"
                 disabled={isSubmitting}
               >
-                {isSubmitting ? "Sending..." : "Send message"}
+                {isSubmitting ? "Sending request..." : "Send booking request"}
               </button>
               <p
                 className={`mt-3 text-sm font-semibold ${

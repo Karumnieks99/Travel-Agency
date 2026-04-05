@@ -1,5 +1,7 @@
+import { CONTACT_PATH, HOME_PATH, TRIPS_PATH } from "../utils/urls";
+
 export const NAV_LINKS = [
-  { label: "Home", href: "index.html" },
-  { label: "Trips", href: "platform.html" },
-  { label: "Contacts", href: "support.html" },
+  { label: "Home", href: HOME_PATH },
+  { label: "Trips", href: TRIPS_PATH },
+  { label: "Contacts", href: CONTACT_PATH },
 ];

@@ -1,9 +1,67 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
+import { useLocation } from "react-router-dom";
+import AppLink from "./AppLink";
 import SiteHeader from "./SiteHeader";
+import MobileWhatsAppButton from "./MobileWhatsAppButton";
 import { buildContactHref } from "../utils/urls";
+import { LEGAL_NAV } from "../data/legal";
+import OptimizedImage from "./OptimizedImage";
 
 export default function Layout({ currentPage, children, renderHeader = true, headerVariant = "solid" }) {
   const year = useMemo(() => new Date().getFullYear(), []);
+  const location = useLocation();
+  const mainRef = useRef(null);
+
+  useEffect(() => {
+    if (typeof window === "undefined") return undefined;
+
+    const focusHashTarget = () => {
+      const targetId = decodeURIComponent(location.hash.slice(1));
+      if (!targetId) return false;
+
+      const target = document.getElementById(targetId);
+      if (!target) return false;
+
+      const hadTabIndex = target.hasAttribute("tabindex");
+      const previousTabIndex = target.getAttribute("tabindex");
+
+      if (!hadTabIndex) {
+        target.setAttribute("tabindex", "-1");
+      }
+
+      target.focus({ preventScroll: true });
+      target.scrollIntoView({ block: "start" });
+
+      return () => {
+        if (!hadTabIndex) {
+          target.removeAttribute("tabindex");
+          return;
+        }
+
+        if (previousTabIndex !== null) {
+          target.setAttribute("tabindex", previousTabIndex);
+        }
+      };
+    };
+
+    let restoreTargetFocus;
+    const frameId = window.requestAnimationFrame(() => {
+      const restoreHashTarget = location.hash ? focusHashTarget() : false;
+
+      if (restoreHashTarget) {
+        restoreTargetFocus = restoreHashTarget;
+        return;
+      }
+
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      mainRef.current?.focus({ preventScroll: true });
+    });
+
+    return () => {
+      window.cancelAnimationFrame(frameId);
+      restoreTargetFocus?.();
+    };
+  }, [location.hash, location.pathname, location.search]);
 
   return (
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
@@ -16,32 +74,52 @@ export default function Layout({ currentPage, children, renderHeader = true, hea
 
       {renderHeader && <SiteHeader currentPage={currentPage} variant={headerVariant} />}
 
-      <main id="main" className="pb-16">
+      <main id="main" ref={mainRef} tabIndex={-1} className="pb-16 focus:outline-none">
         {children}
       </main>
 
       <footer className="border-t border-slate-200 bg-white py-8">
-        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-4 px-6 text-center lg:flex-row lg:items-center lg:gap-6 lg:text-left">
-          <div className="flex items-center gap-3">
-            <img src="photos/logo.png" alt="Surga Indonesia Travel" className="h-9 w-9 rounded-lg object-cover" />
-            <p className="whitespace-normal text-xs font-semibold uppercase tracking-[0.2em] text-slate-500 leading-tight lg:whitespace-nowrap">
-              Surga Indonesia Travel - Discover the Spirit of Indonesia
-            </p>
+        <div className="mx-auto max-w-6xl px-4 sm:px-6">
+          <div className="flex flex-col items-center justify-between gap-4 text-center lg:flex-row lg:items-center lg:text-left">
+            <div className="flex items-center gap-3">
+              <OptimizedImage
+                src="photos/logo.png"
+                alt="Surga Indonesia Travel"
+                className="h-9 w-9 rounded-lg object-cover"
+                loading="lazy"
+                decoding="async"
+                width="36"
+                height="36"
+              />
+              <p className="whitespace-normal text-xs font-semibold uppercase leading-tight tracking-[0.2em] text-slate-500 lg:whitespace-nowrap">
+                Surga Indonesia Travel - Discover the Spirit of Indonesia
+              </p>
+            </div>
+            <p className="text-sm text-slate-500">(c) {year} Surga Indonesia Travel. All rights reserved.</p>
+            <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-700 lg:flex-nowrap lg:gap-4">
+              <AppLink className="hover:text-amber-700" href="/">
+                Home
+              </AppLink>
+              <AppLink className="hover:text-amber-700" href="/platform.html">
+                Trips
+              </AppLink>
+              <AppLink className="hover:text-amber-700" href={buildContactHref()}>
+                Contact
+              </AppLink>
+            </div>
           </div>
-          <p className="text-sm text-slate-500">(c) {year} Surga Indonesia Travel. All rights reserved.</p>
-          <div className="flex flex-wrap items-center justify-center gap-3 text-sm font-semibold text-slate-700 lg:flex-nowrap lg:gap-4">
-            <a className="hover:text-amber-700" href="index.html">
-              Home
-            </a>
-            <a className="hover:text-amber-700" href="platform.html">
-              Trips
-            </a>
-            <a className="hover:text-amber-700" href={buildContactHref()}>
-              Contacts
-            </a>
+
+          <div className="mt-4 flex flex-wrap items-center justify-center gap-x-4 gap-y-2 border-t border-slate-200 pt-4 text-xs font-semibold uppercase tracking-[0.14em] text-slate-500 lg:justify-start">
+            {LEGAL_NAV.map((item) => (
+              <AppLink key={item.href} className="hover:text-amber-700" href={item.href}>
+                {item.label}
+              </AppLink>
+            ))}
           </div>
         </div>
       </footer>
+
+      <MobileWhatsAppButton />
     </div>
   );
 }

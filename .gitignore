@@ -24,3 +24,5 @@ lighthouse-*
 *.report.html
 *.report.json
 reports/lighthouse/
+lighthouse-reports/
+.lighthouseci/
