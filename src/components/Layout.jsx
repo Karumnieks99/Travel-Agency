@@ -3,7 +3,6 @@ import { useLocation, useNavigationType } from "react-router-dom";
 import AppLink from "./AppLink";
 import BackToTopButton from "./BackToTopButton";
 import SiteHeader from "./SiteHeader";
-import MobileWhatsAppButton from "./MobileWhatsAppButton";
 import { buildContactHref } from "../utils/urls";
 import { LEGAL_NAV } from "../data/legal";
 import OptimizedImage from "./OptimizedImage";
@@ -154,7 +153,6 @@ export default function Layout({
         </footer>
       ) : null}
 
-      <MobileWhatsAppButton />
       <BackToTopButton />
     </div>
   );

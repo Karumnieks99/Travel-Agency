@@ -138,7 +138,7 @@ export default function SiteHeader({
     : useHighContrastEditorialNav
       ? "text-white hover:text-[#ffdcc3]"
       : isEditorial
-        ? "text-white/72 hover:text-[#ffdcc3]"
+        ? "text-white hover:text-[#ffdcc3] lg:text-white/72"
       : isOverlay
         ? "text-slate-700 hover:bg-slate-100 hover:text-amber-700 lg:text-white lg:hover:bg-white/10 lg:hover:text-yellow-400"
         : "text-slate-700 hover:bg-slate-100 hover:text-yellow-500";
@@ -150,11 +150,11 @@ export default function SiteHeader({
       : "inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 lg:hidden";
 
   const navShellClasses = isTrip
-    ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127]/96 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
+    ? `absolute left-1/2 top-20 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127] p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
         navOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0 lg:pointer-events-auto lg:scale-100 lg:opacity-100"
       }`
     : isEditorial
-      ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127]/96 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
+      ? `absolute left-1/2 top-20 z-50 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127] p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
           navOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0 lg:pointer-events-auto lg:scale-100 lg:opacity-100"
         }`
       : `absolute left-1/2 top-16 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-200 transition duration-200 sm:top-20 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-3 lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0 ${
