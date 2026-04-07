@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://karumnieks99.github.io/Travel-Agency/sitemap.xml

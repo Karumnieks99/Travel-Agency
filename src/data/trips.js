@@ -1,9 +1,37 @@
+function padDateSegment(value) {
+  return String(value).padStart(2, "0");
+}
+
+function formatIsoDate(date) {
+  return `${date.getFullYear()}-${padDateSegment(date.getMonth() + 1)}-${padDateSegment(date.getDate())}`;
+}
+
+function addDays(date, days) {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+}
+
+function getRollingDeparture({ leadDays, weekday }) {
+  const anchorDate = addDays(new Date(), leadDays);
+  anchorDate.setHours(0, 0, 0, 0);
+  const dayOffset = (weekday - anchorDate.getDay() + 7) % 7;
+  anchorDate.setDate(anchorDate.getDate() + dayOffset);
+  return formatIsoDate(anchorDate);
+}
+
 export const TRIP_OPTIONS = [
   {
     id: "bali-nusa-penida",
     title: "Bali + Nusa Penida",
     region: "Bali archipelago",
     duration: "7 days",
+    durationDays: 7,
+    priceFrom: 1450,
+    nextDeparture: getRollingDeparture({ leadDays: 10, weekday: 3 }),
+    seatsLeft: 4,
+    style: "Island & Culture",
+    budgetTier: "Mid-range",
     image: "photos/dest-bali-penida.jpg",
     summary: "Temple sunsets, manta snorkeling, and cafe time split between Bali and Penida.",
     details: "Private driver on Bali, pre-booked fast boats, spa holds, and reserved tables so you can relax into the island rhythm.",
@@ -27,6 +55,12 @@ export const TRIP_OPTIONS = [
     title: "Sumatra + Java volcano loop",
     region: "Sumatra & Java",
     duration: "9 days",
+    durationDays: 9,
+    priceFrom: 1890,
+    nextDeparture: getRollingDeparture({ leadDays: 17, weekday: 2 }),
+    seatsLeft: 6,
+    style: "Adventure & Culture",
+    budgetTier: "Mid-range",
     image: "photos/dest-sumatra-java.jpg",
     summary: "Rainforest wildlife in Sumatra paired with Java's volcano sunrises and heritage sites.",
     details: "Early starts for wildlife and sunrise views, domestic flights handled, and guides who pace hikes around comfort and weather.",
@@ -52,6 +86,12 @@ export const TRIP_OPTIONS = [
     title: "Raja Ampat liveaboard",
     region: "West Papua",
     duration: "8 days",
+    durationDays: 8,
+    priceFrom: 2750,
+    nextDeparture: getRollingDeparture({ leadDays: 38, weekday: 2 }),
+    seatsLeft: 2,
+    style: "Marine Expedition",
+    budgetTier: "Premium",
     image: "photos/dest-raja-ampat.jpg",
     summary: "Liveaboard through blue lagoons with manta dives, island hikes, and village stops.",
     details: "Small-boat crew handles dive gear, park fees, and weather calls so days stay easy.",
@@ -76,6 +116,12 @@ export const TRIP_OPTIONS = [
     title: "Borneo rainforest & river",
     region: "Kalimantan",
     duration: "6 days",
+    durationDays: 6,
+    priceFrom: 1650,
+    nextDeparture: getRollingDeparture({ leadDays: 14, weekday: 1 }),
+    seatsLeft: 0,
+    style: "Wildlife",
+    budgetTier: "Mid-range",
     image: "photos/dest-kalimantan.jpg",
     summary: "Slow river cruise with orangutans, night walks, and canopy views.",
     details: "Private klotok boat with onboard chef, permits, and ranger slots reserved ahead of time.",
@@ -98,6 +144,12 @@ export const TRIP_OPTIONS = [
     title: "Bali + Lombok + Gili islands",
     region: "Bali & Nusa Tenggara",
     duration: "8 days",
+    durationDays: 8,
+    priceFrom: 1720,
+    nextDeparture: getRollingDeparture({ leadDays: 24, weekday: 3 }),
+    seatsLeft: 5,
+    style: "Island Hopping",
+    budgetTier: "Mid-range",
     image: "photos/dest-lombok-gili.jpg",
     summary: "Split the week between Bali culture, Lombok waterfalls, and laid-back Gili reefs.",
     details: "Coordinated boats, drivers, and luggage handling between islands; mix of boutique stays and beach cabanas.",
@@ -122,6 +174,12 @@ export const TRIP_OPTIONS = [
     title: "Flores + Komodo overland",
     region: "East Nusa Tenggara",
     duration: "7 days",
+    durationDays: 7,
+    priceFrom: 2100,
+    nextDeparture: getRollingDeparture({ leadDays: 31, weekday: 2 }),
+    seatsLeft: 3,
+    style: "Adventure",
+    budgetTier: "Premium",
     image: "photos/dest-flores-komodo.jpg",
     summary: "Overland from Komodo's islands to Flores highlands, ending at Kelimutu lakes.",
     details: "Private boat days with ranger escorts and overland drivers who know the best food stalls between ports and villages.",
@@ -145,6 +203,12 @@ export const TRIP_OPTIONS = [
     title: "Maluku spice isles",
     region: "Maluku",
     duration: "8 days",
+    durationDays: 8,
+    priceFrom: 2480,
+    nextDeparture: getRollingDeparture({ leadDays: 52, weekday: 2 }),
+    seatsLeft: 4,
+    style: "Marine & Heritage",
+    budgetTier: "Premium",
     image: "photos/dest-maluku.jpg",
     summary: "Historic spice islands, clear lagoons, and hammerhead dive season in Maluku.",
     details: "Seasonal hammerhead dives are timed to currents; flights and longboats are pre-booked so you can linger over forts and nutmeg tastings.",
@@ -169,6 +233,12 @@ export const TRIP_OPTIONS = [
     title: "Sulawesi highlands & Togian seas",
     region: "Sulawesi",
     duration: "9 days",
+    durationDays: 9,
+    priceFrom: 2360,
+    nextDeparture: getRollingDeparture({ leadDays: 45, weekday: 2 }),
+    seatsLeft: 7,
+    style: "Culture & Reef",
+    budgetTier: "Mid-range",
     image: "photos/dest-sulawesi.jpg",
     summary: "Toraja highland culture blended with quiet reef days in the Togian Islands.",
     details: "Dedicated driver across the highlands, cultural liaison, and private boats across the Gulf of Tomini.",
@@ -194,6 +264,12 @@ export const TRIP_OPTIONS = [
     title: "Papua highlands & lakes",
     region: "Papua",
     duration: "10 days",
+    durationDays: 10,
+    priceFrom: 2890,
+    nextDeparture: getRollingDeparture({ leadDays: 66, weekday: 2 }),
+    seatsLeft: 5,
+    style: "Expedition",
+    budgetTier: "Premium",
     image: "photos/dest-papua.jpg",
     summary: "Papua valley treks, highland villages, and time on Lake Sentani's painted-isle communities.",
     details: "Altitude-aware pacing, porter-supported treks, and community hosts arranged ahead of time for respectful visits.",
@@ -236,25 +312,3 @@ export const INCLUSIONS = [
   },
 ];
 
-export const TIMELINE_STEPS = [
-  {
-    label: "01",
-    title: "Plan",
-    copy: "Share dates, group size, pace, and the islands you want to see most.",
-  },
-  {
-    label: "02",
-    title: "Design",
-    copy: "We send 1-2 route options with timing, budgets, and activity picks to refine together.",
-  },
-  {
-    label: "03",
-    title: "Book",
-    copy: "Lock boats, flights, stays, guides, and permits with one itinerary and clear confirmations.",
-  },
-  {
-    label: "04",
-    title: "Travel",
-    copy: "We support you in real time and adjust plans around weather, mood, or new ideas.",
-  },
-];
