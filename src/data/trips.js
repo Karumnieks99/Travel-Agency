@@ -1,3 +1,25 @@
+function padDateSegment(value) {
+  return String(value).padStart(2, "0");
+}
+
+function formatIsoDate(date) {
+  return `${date.getFullYear()}-${padDateSegment(date.getMonth() + 1)}-${padDateSegment(date.getDate())}`;
+}
+
+function addDays(date, days) {
+  const nextDate = new Date(date);
+  nextDate.setDate(nextDate.getDate() + days);
+  return nextDate;
+}
+
+function getRollingDeparture({ leadDays, weekday }) {
+  const anchorDate = addDays(new Date(), leadDays);
+  anchorDate.setHours(0, 0, 0, 0);
+  const dayOffset = (weekday - anchorDate.getDay() + 7) % 7;
+  anchorDate.setDate(anchorDate.getDate() + dayOffset);
+  return formatIsoDate(anchorDate);
+}
+
 export const TRIP_OPTIONS = [
   {
     id: "bali-nusa-penida",
@@ -6,7 +28,7 @@ export const TRIP_OPTIONS = [
     duration: "7 days",
     durationDays: 7,
     priceFrom: 1450,
-    nextDeparture: "2026-03-18",
+    nextDeparture: getRollingDeparture({ leadDays: 10, weekday: 3 }),
     seatsLeft: 4,
     style: "Island & Culture",
     budgetTier: "Mid-range",
@@ -35,7 +57,7 @@ export const TRIP_OPTIONS = [
     duration: "9 days",
     durationDays: 9,
     priceFrom: 1890,
-    nextDeparture: "2026-04-07",
+    nextDeparture: getRollingDeparture({ leadDays: 17, weekday: 2 }),
     seatsLeft: 6,
     style: "Adventure & Culture",
     budgetTier: "Mid-range",
@@ -66,7 +88,7 @@ export const TRIP_OPTIONS = [
     duration: "8 days",
     durationDays: 8,
     priceFrom: 2750,
-    nextDeparture: "2026-05-12",
+    nextDeparture: getRollingDeparture({ leadDays: 38, weekday: 2 }),
     seatsLeft: 2,
     style: "Marine Expedition",
     budgetTier: "Premium",
@@ -96,7 +118,7 @@ export const TRIP_OPTIONS = [
     duration: "6 days",
     durationDays: 6,
     priceFrom: 1650,
-    nextDeparture: "2026-03-30",
+    nextDeparture: getRollingDeparture({ leadDays: 14, weekday: 1 }),
     seatsLeft: 0,
     style: "Wildlife",
     budgetTier: "Mid-range",
@@ -124,7 +146,7 @@ export const TRIP_OPTIONS = [
     duration: "8 days",
     durationDays: 8,
     priceFrom: 1720,
-    nextDeparture: "2026-04-22",
+    nextDeparture: getRollingDeparture({ leadDays: 24, weekday: 3 }),
     seatsLeft: 5,
     style: "Island Hopping",
     budgetTier: "Mid-range",
@@ -154,7 +176,7 @@ export const TRIP_OPTIONS = [
     duration: "7 days",
     durationDays: 7,
     priceFrom: 2100,
-    nextDeparture: "2026-05-05",
+    nextDeparture: getRollingDeparture({ leadDays: 31, weekday: 2 }),
     seatsLeft: 3,
     style: "Adventure",
     budgetTier: "Premium",
@@ -183,7 +205,7 @@ export const TRIP_OPTIONS = [
     duration: "8 days",
     durationDays: 8,
     priceFrom: 2480,
-    nextDeparture: "2026-06-09",
+    nextDeparture: getRollingDeparture({ leadDays: 52, weekday: 2 }),
     seatsLeft: 4,
     style: "Marine & Heritage",
     budgetTier: "Premium",
@@ -213,7 +235,7 @@ export const TRIP_OPTIONS = [
     duration: "9 days",
     durationDays: 9,
     priceFrom: 2360,
-    nextDeparture: "2026-05-26",
+    nextDeparture: getRollingDeparture({ leadDays: 45, weekday: 2 }),
     seatsLeft: 7,
     style: "Culture & Reef",
     budgetTier: "Mid-range",
@@ -244,7 +266,7 @@ export const TRIP_OPTIONS = [
     duration: "10 days",
     durationDays: 10,
     priceFrom: 2890,
-    nextDeparture: "2026-07-14",
+    nextDeparture: getRollingDeparture({ leadDays: 66, weekday: 2 }),
     seatsLeft: 5,
     style: "Expedition",
     budgetTier: "Premium",
@@ -290,25 +312,3 @@ export const INCLUSIONS = [
   },
 ];
 
-export const TIMELINE_STEPS = [
-  {
-    label: "01",
-    title: "Plan",
-    copy: "Share dates, group size, pace, and the islands you want to see most.",
-  },
-  {
-    label: "02",
-    title: "Design",
-    copy: "We send 1-2 route options with timing, budgets, and activity picks to refine together.",
-  },
-  {
-    label: "03",
-    title: "Book",
-    copy: "Lock boats, flights, stays, guides, and permits with one itinerary and clear confirmations.",
-  },
-  {
-    label: "04",
-    title: "Travel",
-    copy: "We support you in real time and adjust plans around weather, mood, or new ideas.",
-  },
-];

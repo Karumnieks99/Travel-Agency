@@ -2,6 +2,37 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
-  font-family: 'Inter', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
+  background-color: #faf8ff;
+  color: #131b2e;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    "FILL" 0,
+    "wght" 400,
+    "GRAD" 0,
+    "opsz" 24;
+  vertical-align: middle;
+}
+
+.font-editorial-display {
+  font-family: "Playfair Display", Georgia, serif;
+}
+
+.font-editorial-serif {
+  font-family: "Noto Serif", Georgia, serif;
+}
+
+.font-editorial-label {
+  font-family: "DM Sans", "Inter", system-ui, sans-serif;
+}
+
+.shadow-editorial {
+  box-shadow: 0 20px 40px rgba(19, 27, 46, 0.06);
 }

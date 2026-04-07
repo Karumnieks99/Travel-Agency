@@ -23,7 +23,7 @@ export const TESTIMONIALS = [
   },
 ];
 
-export const AVAILABILITY_LAST_UPDATED = "2026-02-20T09:30:00+08:00";
+export const AVAILABILITY_LAST_UPDATED = new Date().toISOString();
 
 export const BOOKING_CONFIDENCE_POINTS = [
   "No instant card charge on request submission.",
