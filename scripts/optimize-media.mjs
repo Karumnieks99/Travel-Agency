@@ -10,16 +10,22 @@ const imageEntries = [
   { input: "public/photos/dest-bali-penida.jpg" },
   { input: "public/photos/dest-besakih-bali.jpg" },
   { input: "public/photos/dest-flores-komodo.jpg" },
-  { input: "public/photos/dest-kalimantan.jpg" },
+  { input: "public/photos/dest-kalimantan.jpg", quality: 64 },
   { input: "public/photos/dest-kelimutu.jpg" },
   { input: "public/photos/dest-lombok-gili.jpg" },
   { input: "public/photos/dest-maluku.jpg" },
-  { input: "public/photos/dest-papua.jpg" },
+  { input: "public/photos/dest-papua.jpg", quality: 64 },
   { input: "public/photos/dest-raja-ampat.jpg" },
   { input: "public/photos/dest-sulawesi.jpg" },
   { input: "public/photos/dest-sumatra-java.jpg" },
   { input: "public/photos/gallery-flores-ridge.jpg" },
   { input: "public/photos/gallery-rice-terrace.jpg" },
+  // Mobile hero variant; index.html preload + HomePage srcset reference it.
+  {
+    input: "public/photos/gallery-rice-terrace.jpg",
+    output: "public/photos/gallery-rice-terrace-768.webp",
+    resizeWidth: 768,
+  },
   { input: "public/photos/logo.png", resizeWidth: 256 },
 ];
 
@@ -78,14 +84,16 @@ function buildScaleFilter(maxWidth) {
 async function optimizeImages() {
   for (const entry of imageEntries) {
     const inputPath = resolvePath(entry.input);
-    const outputPath = inputPath.replace(/\.(jpe?g|png)$/i, ".webp");
+    const outputPath = entry.output
+      ? resolvePath(entry.output)
+      : inputPath.replace(/\.(jpe?g|png)$/i, ".webp");
     const image = sharp(inputPath, { failOn: "none" });
 
     if (entry.resizeWidth) {
       image.resize({ width: entry.resizeWidth, withoutEnlargement: true });
     }
 
-    await image.webp({ quality: 78, effort: 6 }).toFile(outputPath);
+    await image.webp({ quality: entry.quality ?? 70, effort: 6, smartSubsample: true }).toFile(outputPath);
     console.log(`image -> ${path.relative(projectRoot, outputPath)}`);
   }
 }

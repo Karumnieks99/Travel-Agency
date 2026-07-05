@@ -100,14 +100,14 @@ export default function Layout({
     <div className="min-h-screen bg-slate-50 text-slate-900 antialiased">
       <a
         href="#main"
-        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:rounded-lg focus:bg-amber-100 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-amber-800"
+        className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:z-[60] focus:rounded-lg focus:bg-amber-100 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-amber-800"
       >
         Skip to content
       </a>
 
       {renderHeader && <SiteHeader currentPage={currentPage} variant={headerVariant} />}
 
-      <main id="main" ref={mainRef} tabIndex={-1} className="pb-16 focus:outline-none">
+      <main id="main" ref={mainRef} tabIndex={-1} className="focus:outline-none">
         {children}
       </main>
 

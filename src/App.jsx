@@ -9,7 +9,10 @@ import {
   TRIPS_PATH,
 } from "./utils/urls";
 
-const HomePage = lazy(() => import("./pages/HomePage"));
+// HomePage loads eagerly: lazy-loading the landing page adds a serial network
+// round trip between main.js and first paint, which dominates FCP/LCP.
+import HomePage from "./pages/HomePage";
+
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TripPage = lazy(() => import("./pages/TripPage"));
@@ -17,7 +20,7 @@ const LegalPage = lazy(() => import("./pages/LegalPage"));
 
 export default function App() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-slate-50" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[#f8f5ee]" />}>
       <Routes>
         <Route path={HOME_PATH} element={<HomePage />} />
         <Route path={HOME_ALIAS_PATH} element={<Navigate to={HOME_PATH} replace />} />

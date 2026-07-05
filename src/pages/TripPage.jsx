@@ -4,6 +4,7 @@ import AppLink from "../components/AppLink";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
 import SiteHeader from "../components/SiteHeader";
+import usePrefersReducedMotion from "../hooks/usePrefersReducedMotion";
 import { TRIP_OPTIONS } from "../data/trips";
 import { AVAILABILITY_LAST_UPDATED, BOOKING_CONFIDENCE_POINTS } from "../data/trust";
 import {
@@ -32,7 +33,7 @@ const TRIP_EDITORIAL_META = {
   "bali-nusa-penida": {
     eyebrow: "Expedition / Bali Archipelago",
     headline: "BALI + NUSA PENIDA: THE SPIRIT OF THE ARCHIPELAGO",
-    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/gallery-rice-terrace.jpg"],
+    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/gallery-rice-terrace.jpg", "photos/dest-lombok-gili.jpg"],
     bookingFeatures: [
       { icon: "bed", label: "Curated villa stays" },
       { icon: "verified", label: "Private local guiding" },
@@ -43,7 +44,7 @@ const TRIP_EDITORIAL_META = {
   "sumatra-java-volcano": {
     eyebrow: "Expedition / Sumatra + Java",
     headline: "SUMATRA + JAVA: VOLCANO SUNRISES & RAINFOREST TRACKS",
-    mediaPool: ["photos/gallery-rice-terrace.jpg", "photos/dest-sumatra-java.jpg"],
+    mediaPool: ["photos/gallery-rice-terrace.jpg", "photos/dest-kelimutu.jpg", "photos/gallery-flores-ridge.jpg"],
     bookingFeatures: [
       { icon: "forest", label: "Wildlife-first pacing" },
       { icon: "hiking", label: "Sunrise trek planning" },
@@ -65,7 +66,7 @@ const TRIP_EDITORIAL_META = {
   "borneo-river": {
     eyebrow: "Expedition / Kalimantan",
     headline: "BORNEO: RIVER DRIFTING INTO THE RAINFOREST",
-    mediaPool: ["photos/dest-kalimantan.jpg", "photos/dest-papua.jpg"],
+    mediaPool: ["photos/dest-sulawesi.jpg", "photos/gallery-rice-terrace.jpg"],
     bookingFeatures: [
       { icon: "directions_boat", label: "Private klotok cruising" },
       { icon: "pets", label: "Ranger-led wildlife access" },
@@ -76,7 +77,7 @@ const TRIP_EDITORIAL_META = {
   "bali-lombok-gili": {
     eyebrow: "Expedition / Bali to Gilis",
     headline: "BALI + LOMBOK + GILIS: A CLEANER ISLAND-HOPPING WEEK",
-    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/dest-lombok-gili.jpg"],
+    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/dest-bali-penida.jpg"],
     bookingFeatures: [
       { icon: "bed", label: "Boutique island stays" },
       { icon: "directions_boat", label: "Boat and luggage timing" },
@@ -98,7 +99,7 @@ const TRIP_EDITORIAL_META = {
   "maluku-spice-isles": {
     eyebrow: "Expedition / Maluku",
     headline: "MALUKU: SPICE ISLES, FORTS & CLEAR WATER",
-    mediaPool: ["photos/dest-maluku.jpg", "photos/dest-raja-ampat.jpg"],
+    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/dest-lombok-gili.jpg"],
     bookingFeatures: [
       { icon: "history_edu", label: "Heritage route design" },
       { icon: "waves", label: "Lagoon and reef days" },
@@ -109,7 +110,7 @@ const TRIP_EDITORIAL_META = {
   "sulawesi-highlands-togian": {
     eyebrow: "Expedition / Sulawesi",
     headline: "SULAWESI: HIGHLANDS TO TOGIAN REEFS",
-    mediaPool: ["photos/dest-sulawesi.jpg", "photos/dest-raja-ampat.jpg"],
+    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/gallery-rice-terrace.jpg"],
     bookingFeatures: [
       { icon: "terrain", label: "Highland driver support" },
       { icon: "waves", label: "Private island boats" },
@@ -120,7 +121,7 @@ const TRIP_EDITORIAL_META = {
   "papua-highlands": {
     eyebrow: "Expedition / Papua",
     headline: "PAPUA: VALLEYS, VILLAGES & LAKE SENTANI",
-    mediaPool: ["photos/dest-papua.jpg", "photos/dest-raja-ampat.jpg"],
+    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/gallery-flores-ridge.jpg"],
     bookingFeatures: [
       { icon: "altitude", label: "Altitude-aware pacing" },
       { icon: "hiking", label: "Porter-supported trekking" },
@@ -345,8 +346,9 @@ function getDayMediaLayout(index, mediaPool) {
 
 function getDayMediaSources(index, mediaPool) {
   if (!mediaPool.length) return [];
-  const primary = mediaPool[index % mediaPool.length];
-  const secondary = mediaPool[(index + 1) % mediaPool.length];
+  // Offset by one so day 1 never repeats the hero image directly beneath it.
+  const primary = mediaPool[(index + 1) % mediaPool.length];
+  const secondary = mediaPool[(index + 2) % mediaPool.length];
   return [primary, secondary];
 }
 
@@ -361,10 +363,11 @@ function getAvailabilityTone(trip) {
 
 function ScrollRevealImage({ src, alt, heightClass, revealOnScroll = false }) {
   const frameRef = useRef(null);
+  const prefersReducedMotion = usePrefersReducedMotion();
   const [isRevealed, setIsRevealed] = useState(!revealOnScroll);
 
   useEffect(() => {
-    if (!revealOnScroll) {
+    if (!revealOnScroll || prefersReducedMotion) {
       setIsRevealed(true);
       return undefined;
     }
@@ -384,15 +387,15 @@ function ScrollRevealImage({ src, alt, heightClass, revealOnScroll = false }) {
         observer.disconnect();
       },
       {
-        threshold: 0.45,
-        rootMargin: "0px 0px -12% 0px",
+        threshold: 0.15,
+        rootMargin: "0px 0px -5% 0px",
       }
     );
 
     observer.observe(frameElement);
 
     return () => observer.disconnect();
-  }, [revealOnScroll]);
+  }, [prefersReducedMotion, revealOnScroll]);
 
   return (
     <div ref={frameRef} className={`relative w-full overflow-hidden ${heightClass}`}>
@@ -603,7 +606,7 @@ export default function TripPage() {
 
   return (
     <Layout currentPage="trips" renderHeader={false} renderFooter={false}>
-      <div className="bg-[#faf8ff] text-[#131b2e] selection:bg-[#ffdcc3] selection:text-[#2f1500]">
+      <div className="bg-[#f8f5ee] text-[#131b2e] selection:bg-[#ffdcc3] selection:text-[#2f1500]">
         <aside className="group fixed left-0 top-0 z-40 hidden h-screen w-16 flex-col items-center border-r border-[#887364]/20 bg-white py-8 transition-all duration-300 hover:w-64 xl:flex">
           <div className="mb-12">
             <span className="material-symbols-outlined text-[#8d4b00]">explore</span>
@@ -613,10 +616,10 @@ export default function TripPage() {
               <a
                 key={item.label}
                 href={item.href}
-                className={`flex items-center gap-4 pl-4 transition-all ${
+                className={`flex items-center gap-4 py-2 pl-5 transition-all ${
                   index === 0
-                    ? "border-l-4 border-[#8d4b00] font-bold text-[#8d4b00]"
-                    : "text-[#565e74] hover:bg-[#f2f3ff]"
+                    ? "bg-[#fff1e5] font-bold text-[#8d4b00]"
+                    : "text-[#565e74] hover:bg-[#f5f1e8] hover:text-[#131b2e]"
                 }`}
               >
                 <span className="material-symbols-outlined">{item.icon}</span>
@@ -632,6 +635,7 @@ export default function TripPage() {
         </aside>
 
         <main className="relative">
+          <SiteHeader currentPage="trips" variant="editorial" showCta={false} brandSubtitle={null} forceLightNav />
           <section className="relative h-[620px] min-h-[520px] w-full overflow-hidden md:h-[760px] xl:h-[870px]">
             <div className="absolute inset-0 z-0">
               <OptimizedImage
@@ -647,10 +651,6 @@ export default function TripPage() {
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
             </div>
 
-            <div className="relative z-10">
-              <SiteHeader currentPage="trips" variant="editorial" showCta={false} brandSubtitle={null} forceLightNav />
-            </div>
-
             <div className="relative z-10 flex h-full items-center justify-center">
               <div className="mx-auto max-w-5xl px-6 text-center xl:pl-28">
                 <p className="font-editorial-label mb-6 text-xs uppercase tracking-[0.4em] text-white">{tripMeta.eyebrow}</p>
@@ -661,21 +661,21 @@ export default function TripPage() {
             </div>
           </section>
 
-          <section id="trip-overview" className="sticky top-[77px] z-40 border-y border-black/10 bg-white">
+          <section id="trip-overview" className="sticky top-20 z-40 border-y border-black/10 bg-white">
             <div className="mx-auto flex max-w-screen-2xl flex-wrap items-center justify-between gap-6 px-6 py-5 xl:pl-28 xl:pr-12">
               <div className="flex flex-wrap items-center gap-6 text-xs font-bold uppercase tracking-[0.22em] text-[#131b2e] md:gap-8">
                 <div className="flex flex-col">
-                  <span className="mb-1 text-[#565e74]/60">Duration</span>
+                  <span className="mb-1 text-[#565e74]">Duration</span>
                   <span>{trip.duration.toUpperCase()}</span>
                 </div>
                 <div className="hidden h-8 w-px bg-black/10 md:block" />
                 <div className="flex flex-col">
-                  <span className="mb-1 text-[#565e74]/60">Region</span>
+                  <span className="mb-1 text-[#565e74]">Region</span>
                   <span>{trip.region.toUpperCase()}</span>
                 </div>
                 <div className="hidden h-8 w-px bg-black/10 md:block" />
                 <div className="flex flex-col">
-                  <span className="mb-1 text-[#565e74]/60">Investment</span>
+                  <span className="mb-1 text-[#565e74]">Investment</span>
                   <span>FROM {formatPrice(trip.priceFrom)}</span>
                 </div>
               </div>
@@ -768,7 +768,7 @@ export default function TripPage() {
             </div>
 
             <aside className="lg:w-96">
-              <div className="space-y-6 lg:sticky lg:top-40">
+              <div className="space-y-6 lg:sticky lg:top-44">
                 <div id="trip-booking" className="border border-white/5 bg-[#131b2e] p-8 text-white shadow-[20px_40px_40px_rgba(19,27,46,0.06)] md:p-10">
                   <h3 className="font-editorial-serif text-2xl font-bold">Book Your Journey</h3>
                   <p className="font-editorial-label mb-8 mt-2 text-xs uppercase tracking-[0.28em] text-[#ffdcc3]">
@@ -808,7 +808,7 @@ export default function TripPage() {
                   >
                     WhatsApp Concierge
                   </a>
-                  <p className="font-editorial-label mt-6 text-center text-[10px] uppercase tracking-[0.2em] text-white/40">
+                  <p className="font-editorial-label mt-6 text-center text-[10px] uppercase tracking-[0.2em] text-white/60">
                     Estimated response: 2 hours
                   </p>
                 </div>
@@ -843,35 +843,35 @@ export default function TripPage() {
         <footer className="mt-24 border-t border-white/10 bg-[#131b2e] px-6 py-12 xl:pl-28 xl:pr-12 xl:py-16">
           <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-between gap-8 md:flex-row">
             <div>
-              <span className="font-editorial-serif text-2xl font-bold tracking-tight text-[#8d4b00]">Surga Indonesia Travel</span>
+              <span className="font-editorial-serif text-2xl font-bold tracking-tight text-[#ffdcc3]">Surga Indonesia Travel</span>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-8">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
               <AppLink
                 href={LEGAL_PATHS.privacy}
-                className="text-xs uppercase tracking-[0.18em] text-white/60 transition-opacity hover:text-[#8d4b00]"
+                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
               >
                 Privacy
               </AppLink>
               <AppLink
                 href={LEGAL_PATHS.terms}
-                className="text-xs uppercase tracking-[0.18em] text-white/60 transition-opacity hover:text-[#8d4b00]"
+                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
               >
                 Terms
               </AppLink>
               <AppLink
                 href={buildContactHref({ source: "trip-footer", topic: `Concierge: ${trip.title}` })}
-                className="text-xs uppercase tracking-[0.18em] text-white/60 transition-opacity hover:text-[#8d4b00]"
+                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
               >
                 Concierge
               </AppLink>
               <AppLink
                 href={buildContactHref({ source: "trip-footer" })}
-                className="text-xs uppercase tracking-[0.18em] text-white/60 transition-opacity hover:text-[#8d4b00]"
+                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
               >
                 Contact
               </AppLink>
             </div>
-            <div className="text-xs uppercase tracking-[0.18em] text-white/40">
+            <div className="text-xs uppercase tracking-[0.18em] text-white/55">
               (c) {year} SURGA INDONESIA TRAVEL. ALL RIGHTS RESERVED.
             </div>
           </div>
