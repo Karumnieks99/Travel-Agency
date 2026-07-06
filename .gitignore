@@ -26,3 +26,5 @@ lighthouse-*
 reports/lighthouse/
 lighthouse-reports/
 .lighthouseci/
+
+src/components/CLAUDE.md
