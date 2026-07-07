@@ -5,6 +5,7 @@ import { NAV_LINKS } from "../data/navigation";
 import { buildContactHref } from "../utils/urls";
 import AppLink from "./AppLink";
 import OptimizedImage from "./OptimizedImage";
+import SavedRoutesDrawer from "./SavedRoutesDrawer";
 
 export default function SiteHeader({
   currentPage,
@@ -18,6 +19,7 @@ export default function SiteHeader({
   brandSubtitle = undefined,
 }) {
   const [navOpen, setNavOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const isDesktop = useIsDesktop();
   const location = useLocation();
   const menuButtonRef = useRef(null);
@@ -32,6 +34,25 @@ export default function SiteHeader({
   useEffect(() => {
     if (isDesktop) setNavOpen(false);
   }, [isDesktop]);
+
+  useEffect(() => {
+    if (typeof window === "undefined" || !(isEditorial || isTrip)) return undefined;
+    let frameId = 0;
+    const syncScrolled = () => {
+      frameId = 0;
+      setScrolled(window.scrollY > 24);
+    };
+    const handleScroll = () => {
+      if (frameId) return;
+      frameId = window.requestAnimationFrame(syncScrolled);
+    };
+    syncScrolled();
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => {
+      if (frameId) window.cancelAnimationFrame(frameId);
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, [isEditorial, isTrip]);
 
   useEffect(() => {
     setNavOpen(false);
@@ -101,18 +122,31 @@ export default function SiteHeader({
     };
   }, [isDesktop, isTrip, navOpen]);
 
+  const mobileNavSolid = navOpen && !isDesktop;
   const headerClasses = isTrip
-    ? "sticky top-0 z-50"
+    ? `fixed inset-x-0 top-0 z-50 transition-colors duration-300 ${
+        mobileNavSolid
+          ? "border-b border-white/10 bg-[#10181c]"
+          : scrolled
+            ? "border-b border-white/10 bg-[#10181c]/95 backdrop-blur-md"
+            : "bg-transparent"
+      }`
     : isEditorial
-      ? "sticky top-0 z-50 border-b border-white/10 bg-[#0d171b]/40 backdrop-blur-md"
+      ? `fixed inset-x-0 top-0 z-50 border-b border-white/10 transition-colors duration-300 ${
+          mobileNavSolid
+            ? "bg-[#0d171b]"
+            : scrolled
+              ? "bg-[#0d171b]/95 shadow-[0_18px_40px_rgba(0,0,0,0.22)] backdrop-blur-md"
+              : "bg-[#0d171b]/40 backdrop-blur-md"
+        }`
       : isOverlay
         ? "sticky top-0 z-50 border-b border-white/20 bg-white/10 backdrop-blur"
         : "sticky top-0 z-50 border-b border-white/10 bg-white/80 shadow-sm backdrop-blur";
 
   const logoTitleClass = isTrip
-    ? "font-editorial-serif text-2xl font-bold text-white"
+    ? "font-editorial-serif text-xl font-bold text-white sm:text-2xl"
     : isEditorial
-      ? "font-editorial-serif text-2xl font-bold tracking-tight text-[#f5efe4]"
+      ? "font-editorial-serif text-xl font-bold tracking-tight text-[#f5efe4] sm:text-2xl"
       : isOverlay
         ? "text-sm font-semibold tracking-tight text-white"
         : "text-sm font-semibold tracking-tight";
@@ -134,11 +168,11 @@ export default function SiteHeader({
         : "bg-amber-100 text-amber-900";
 
   const navLinkInactive = isTrip
-    ? "text-white/72 transition-colors duration-300 hover:text-[#ffdcc3]"
+    ? "text-white/70 transition-colors duration-300 hover:text-[#ffdcc3]"
     : useHighContrastEditorialNav
       ? "text-white hover:text-[#ffdcc3]"
       : isEditorial
-        ? "text-white/72 hover:text-[#ffdcc3]"
+        ? "text-white/70 hover:text-[#ffdcc3]"
       : isOverlay
         ? "text-slate-700 hover:bg-slate-100 hover:text-amber-700 lg:text-white lg:hover:bg-white/10 lg:hover:text-yellow-400"
         : "text-slate-700 hover:bg-slate-100 hover:text-yellow-500";
@@ -150,11 +184,11 @@ export default function SiteHeader({
       : "inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500 lg:hidden";
 
   const navShellClasses = isTrip
-    ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127]/96 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
+    ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127] p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
         navOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0 lg:pointer-events-auto lg:scale-100 lg:opacity-100"
       }`
     : isEditorial
-      ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127]/96 p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
+      ? `absolute left-1/2 top-20 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform border border-white/10 bg-[#112127] p-4 shadow-[0_24px_48px_rgba(0,0,0,0.3)] transition duration-200 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-8 lg:border-0 lg:bg-transparent lg:p-0 lg:shadow-none ${
           navOpen ? "scale-100 opacity-100" : "pointer-events-none scale-95 opacity-0 lg:pointer-events-auto lg:scale-100 lg:opacity-100"
         }`
       : `absolute left-1/2 top-16 w-[calc(100%-2rem)] max-w-xl -translate-x-1/2 transform rounded-2xl bg-white p-4 shadow-xl ring-1 ring-slate-200 transition duration-200 sm:top-20 sm:w-[calc(100%-3rem)] lg:static lg:flex lg:w-auto lg:translate-x-0 lg:items-center lg:gap-3 lg:bg-transparent lg:p-0 lg:shadow-none lg:ring-0 ${
@@ -186,8 +220,8 @@ export default function SiteHeader({
     : "inline-flex items-center justify-center border border-slate-200 px-3 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-100 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-500";
 
   const containerClass = isTrip
-    ? "mx-auto flex max-w-screen-2xl items-center justify-between gap-6 px-6 py-5 xl:pl-28 xl:pr-12"
-    : `mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 ${isEditorial ? "max-w-7xl py-5" : "h-16 max-w-6xl sm:h-20"}`;
+    ? "mx-auto flex h-20 max-w-screen-2xl items-center justify-between gap-6 px-6 xl:pl-28 xl:pr-12"
+    : `mx-auto flex items-center justify-between gap-4 px-4 sm:px-6 ${isEditorial ? "h-20 max-w-7xl" : "h-16 max-w-6xl sm:h-20"}`;
 
   const brandLinkClass = isEditorial || isTrip ? "shrink-0" : "group flex shrink-0 items-center gap-3";
 
@@ -222,21 +256,23 @@ export default function SiteHeader({
             </>
           )}
         </AppLink>
-        {showMenuButton ? (
-          <button
-            ref={menuButtonRef}
-            type="button"
-            aria-expanded={navOpen}
-            aria-controls="primary-nav"
-            onClick={() => setNavOpen((open) => !open)}
-            className={menuButtonClass}
-          >
-            <span>Menu</span>
-            <span className="h-px w-5 bg-current" aria-hidden />
-          </button>
-        ) : null}
+        <div className="flex items-center gap-3">
+          <SavedRoutesDrawer tone={isTrip || isEditorial || isOverlay ? "dark" : "light"} />
+          {showMenuButton ? (
+            <button
+              ref={menuButtonRef}
+              type="button"
+              aria-expanded={navOpen}
+              aria-controls="primary-nav"
+              onClick={() => setNavOpen((open) => !open)}
+              className={menuButtonClass}
+            >
+              <span>Menu</span>
+              <span className="h-px w-5 bg-current" aria-hidden />
+            </button>
+          ) : null}
 
-        <nav ref={navRef} id="primary-nav" className={navShellClasses} hidden={navHidden}>
+          <nav ref={navRef} id="primary-nav" className={navShellClasses} hidden={navHidden}>
           <div className="mb-3 flex items-center justify-between gap-3 lg:hidden">
             <p className={navLabelClass}>Navigation</p>
             <button
@@ -271,7 +307,8 @@ export default function SiteHeader({
               {resolvedCtaLabel}
             </AppLink>
           ) : null}
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );

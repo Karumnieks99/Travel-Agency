@@ -26,3 +26,11 @@ lighthouse-*
 reports/lighthouse/
 lighthouse-reports/
 .lighthouseci/
+
+src/components/CLAUDE.md
+
+# Superpowers brainstorm/session scratch state
+.superpowers/
+
+# Impeccable local design-review snapshots
+.impeccable/

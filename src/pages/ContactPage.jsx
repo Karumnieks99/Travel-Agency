@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AppLink from "../components/AppLink";
 import EditorialFooter from "../components/EditorialFooter";
+import FaqAccordion from "../components/FaqAccordion";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
 import SiteHeader from "../components/SiteHeader";
@@ -178,7 +179,15 @@ export default function ContactPage() {
 
   return (
     <Layout currentPage="contacts" renderHeader={false} renderFooter={false}>
-      <div className="bg-[#faf8ff] text-[#131b2e]">
+      <div className="bg-[#f8f5ee] text-[#131b2e]">
+        <SiteHeader
+          currentPage="contacts"
+          variant="editorial"
+          ctaHref="#contact"
+          ctaLabel="Start planning"
+          showCta={false}
+          brandSubtitle={null}
+        />
         <section className="relative isolate overflow-hidden bg-[#0d0d0b] text-white">
           <OptimizedImage
             src="photos/dest-raja-ampat.jpg"
@@ -193,16 +202,7 @@ export default function ContactPage() {
           <div className="absolute inset-0 bg-gradient-to-b from-black/30 via-black/45 to-black/80" aria-hidden />
 
           <div className="relative z-10">
-            <SiteHeader
-              currentPage="contacts"
-              variant="editorial"
-              ctaHref="#contact"
-              ctaLabel="Start planning"
-              showCta={false}
-              brandSubtitle={null}
-            />
-
-            <div className="mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-24">
+            <div className="mx-auto max-w-7xl px-4 pb-20 pt-36 sm:px-6 lg:px-8 lg:pb-24 lg:pt-44">
               <nav className="font-editorial-label flex items-center gap-2 text-[10px] uppercase tracking-[0.24em] text-white/70">
                 <AppLink className="transition hover:text-white" href="/">
                   Home
@@ -217,7 +217,7 @@ export default function ContactPage() {
                   <br />
                   <span className="font-editorial-serif italic normal-case tracking-tight">real planner</span>
                 </h1>
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/88 sm:text-xl sm:leading-9">
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 sm:text-xl sm:leading-9">
                   Based in Ubud. Replies within one business day. No automated queue, no fake concierge copy, just the team that actually handles route planning and on-trip fixes.
                 </p>
               </div>
@@ -239,14 +239,13 @@ export default function ContactPage() {
           <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8">
             <div className="space-y-8">
               <div>
-                <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Visit or call</p>
-                <h2 className="font-editorial-display mt-4 text-4xl font-bold text-[#131b2e] sm:text-5xl">Planning desk and office details</h2>
+                <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Planning desk and office details</h2>
                 <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
                   Walk in or call ahead. One desk handles new requests, and one operations line stays focused on travelers already moving between islands.
                 </p>
               </div>
 
-              <div className="border border-black/10 bg-[#faf8ff] p-6">
+              <div className="border border-black/10 bg-[#f8f5ee] p-6">
                 <div className="space-y-5">
                   <div>
                     <p className="font-editorial-label text-[10px] uppercase tracking-[0.22em] text-slate-500">Office</p>
@@ -289,18 +288,18 @@ export default function ContactPage() {
                 <div className="border border-black/10 bg-white p-5">
                   <h3 className="font-editorial-serif text-xl font-bold text-[#131b2e]">Payments</h3>
                   <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
-                    <li><span className="font-semibold text-slate-900">Bank</span>: Bank Central Asia (BCA)</li>
-                    <li><span className="font-semibold text-slate-900">Account</span>: PT Surga Indonesia Travel</li>
-                    <li><span className="font-semibold text-slate-900">IBAN</span>: 1234 5678 9012</li>
-                    <li><span className="font-semibold text-slate-900">Notes</span>: Invoices are issued in IDR or USD, with verified payment links available on request.</li>
+                    <li><span className="font-semibold text-slate-900">Registered to</span>: PT Surga Indonesia Travel</li>
+                    <li><span className="font-semibold text-slate-900">Bank</span>: Bank Central Asia (BCA), Indonesia</li>
+                    <li><span className="font-semibold text-slate-900">Transfer details</span>: Full account and reference numbers are issued on your deposit invoice, never over email.</li>
+                    <li><span className="font-semibold text-slate-900">Currencies</span>: Invoices in IDR or USD, with verified payment links available on request.</li>
                     <li><span className="font-semibold text-slate-900">Booking flow</span>: Dates and rates are only locked after planner confirmation.</li>
                   </ul>
                 </div>
               </div>
             </div>
 
-            <div className="overflow-hidden border border-black/10 bg-white">
-              <div className="aspect-[4/3] bg-slate-100">
+            <div className="flex flex-col overflow-hidden border border-black/10 bg-white">
+              <div className="min-h-[320px] flex-1 bg-slate-100">
                 <iframe
                   title="Surga Indonesia Travel office location"
                   src="https://www.openstreetmap.org/export/embed.html?bbox=115.254%2C-8.514%2C115.268%2C-8.494&layer=mapnik&marker=-8.504%2C115.261"
@@ -325,11 +324,10 @@ export default function ContactPage() {
           </div>
         </section>
 
-        <section id="contact" className="bg-[#faf8ff] py-20 lg:py-24">
+        <section id="contact" className="bg-[#f8f5ee] py-20 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div className="space-y-5">
-                <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Write to us</p>
                 <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Send the rough shape of the trip</h2>
                 <p className="text-lg leading-8 text-slate-600">
                   Dates, group size, and the islands you care about most are enough to start. We confirm live availability and exact pricing before anything is locked.
@@ -369,7 +367,7 @@ export default function ContactPage() {
                       type="text"
                       name="name"
                       placeholder="Your name"
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                       required
                     />
                   </label>
@@ -379,7 +377,7 @@ export default function ContactPage() {
                       type="email"
                       name="email"
                       placeholder="you@example.com"
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                       required
                     />
                   </label>
@@ -389,7 +387,7 @@ export default function ContactPage() {
                       type="tel"
                       name="phone"
                       placeholder="+62 812 3456 7890"
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                     />
                   </label>
                   <label className="font-editorial-label text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
@@ -399,7 +397,7 @@ export default function ContactPage() {
                       name="travel_month"
                       placeholder={travelMonthPlaceholder}
                       defaultValue={bookingPrefill.travelMonth}
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                     />
                   </label>
                   <label className="font-editorial-label text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
@@ -411,7 +409,7 @@ export default function ContactPage() {
                       max={MAX_TRAVELERS}
                       step="1"
                       placeholder="2"
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                     />
                   </label>
                   <label className="font-editorial-label text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
@@ -421,7 +419,7 @@ export default function ContactPage() {
                       name="topic"
                       placeholder="Trip idea, change, billing"
                       defaultValue={bookingPrefill.defaultTopic}
-                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                      className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                     />
                   </label>
                 </div>
@@ -433,7 +431,7 @@ export default function ContactPage() {
                     rows="6"
                     placeholder="Share route ideas, dates, flight city, and room preference."
                     defaultValue={bookingPrefill.defaultMessage}
-                    className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
+                    className="mt-2 w-full border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-black focus:outline-none focus:ring-2 focus:ring-black/10"
                     required
                   />
                 </label>
@@ -456,6 +454,20 @@ export default function ContactPage() {
                 </p>
               </form>
             </div>
+          </div>
+        </section>
+
+        <section className="border-t border-black/10 bg-white py-20 lg:py-24">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">
+                Questions we hear most
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                A few things worth knowing before you send the first message. Anything else, ask us directly.
+              </p>
+            </div>
+            <FaqAccordion className="mt-10" />
           </div>
         </section>
 

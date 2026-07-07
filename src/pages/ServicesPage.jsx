@@ -3,7 +3,9 @@ import AppLink from "../components/AppLink";
 import EditorialFooter from "../components/EditorialFooter";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
+import SaveRouteButton from "../components/SaveRouteButton";
 import SiteHeader from "../components/SiteHeader";
+import Testimonials from "../components/Testimonials";
 import usePrefersReducedMotion from "../hooks/usePrefersReducedMotion";
 import { TRIP_OPTIONS } from "../data/trips";
 import { AVAILABILITY_LAST_UPDATED } from "../data/trust";
@@ -122,17 +124,12 @@ export default function ServicesPage() {
   }, []);
 
   useEffect(() => {
-    if (prefersReducedMotion) {
+    if (prefersReducedMotion || isMobileViewport) {
       setLoadHeroVideo(false);
       setHeroVideoReady(false);
       return undefined;
     }
     setHeroVideoReady(false);
-    if (isMobileViewport) {
-      setLoadHeroVideo(false);
-      const timer = window.setTimeout(() => setLoadHeroVideo(true), 1200);
-      return () => window.clearTimeout(timer);
-    }
     setLoadHeroVideo(true);
     return undefined;
   }, [prefersReducedMotion, isMobileViewport]);
@@ -178,7 +175,15 @@ export default function ServicesPage() {
 
   return (
     <Layout currentPage="trips" renderHeader={false} renderFooter={false}>
-      <div className="bg-[#faf8ff] text-[#131b2e]">
+      <div className="bg-[#f8f5ee] text-[#131b2e]">
+        <SiteHeader
+          currentPage="trips"
+          variant="editorial"
+          ctaHref={buildContactHref({ source: "destinations-header", topic: "Start planning" })}
+          ctaLabel="Start planning"
+          showCta={false}
+          brandSubtitle={null}
+        />
         <section className="relative isolate overflow-hidden bg-[#0d0d0b] text-white">
           <div className="absolute inset-0 -z-20">
             <OptimizedImage
@@ -215,16 +220,7 @@ export default function ServicesPage() {
           <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/30 via-black/45 to-black/80" aria-hidden />
 
           <div className="relative z-10">
-            <SiteHeader
-              currentPage="trips"
-              variant="editorial"
-              ctaHref={buildContactHref({ source: "destinations-header", topic: "Start planning" })}
-              ctaLabel="Start planning"
-              showCta={false}
-              brandSubtitle={null}
-            />
-
-            <div className="mx-auto max-w-7xl px-4 pb-20 pt-16 sm:px-6 lg:px-8 lg:pb-24 lg:pt-24">
+            <div className="mx-auto max-w-7xl px-4 pb-20 pt-36 sm:px-6 lg:px-8 lg:pb-24 lg:pt-44">
               <div className="max-w-4xl">
                 <p className="font-editorial-label text-xs uppercase tracking-[0.34em] text-white/80">Curated destinations</p>
                 <h1 className="font-editorial-display mt-6 text-5xl font-bold uppercase leading-[0.95] tracking-[-0.04em] text-white sm:text-7xl lg:text-[5.4rem]">
@@ -232,7 +228,7 @@ export default function ServicesPage() {
                   <br />
                   <span className="font-editorial-serif italic normal-case tracking-tight">real Indonesia travel</span>
                 </h1>
-                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/88 sm:text-xl sm:leading-9">
+                <p className="mt-6 max-w-2xl text-lg leading-8 text-white/90 sm:text-xl sm:leading-9">
                   Every route here is a working starting point with actual pacing, actual boat timing, and room to reshape the islands around your dates and budget.
                 </p>
                 <div className="mt-10 flex flex-wrap gap-4">
@@ -249,7 +245,7 @@ export default function ServicesPage() {
         </section>
 
         <section className="border-y border-black/10 bg-white">
-          <div className="mx-auto grid max-w-7xl gap-6 px-4 py-6 sm:px-6 lg:grid-cols-4 lg:px-8">
+          <div className="mx-auto grid max-w-7xl grid-cols-2 gap-6 px-4 py-6 sm:px-6 lg:grid-cols-4 lg:px-8">
             <div>
               <p className="font-editorial-label text-[10px] uppercase tracking-[0.24em] text-slate-500">Published routes</p>
               <p className="font-editorial-serif mt-2 text-3xl font-bold text-[#131b2e]">{TRIP_OPTIONS.length}</p>
@@ -274,8 +270,7 @@ export default function ServicesPage() {
         <section id="destinations-grid" className="py-20 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="border-b-2 border-black pb-8">
-              <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Signature departures</p>
-              <div className="mt-4 max-w-3xl">
+              <div className="max-w-3xl">
                   <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Destinations with structure already built in</h2>
                   <p className="mt-4 text-lg leading-8 text-slate-600">
                     Filter by region, pace, or budget tier, then start from the route that feels closest. From there, we adjust nights, crossings, and stays around your version of the trip.
@@ -356,7 +351,7 @@ export default function ServicesPage() {
                     <option value="duration-short-long">Duration: short to long</option>
                   </select>
                 </label>
-                <label className="flex min-h-[78px] items-center gap-3 border border-slate-200 bg-[#faf8ff] px-4 py-3 text-sm font-semibold text-slate-800">
+                <label className="flex min-h-[78px] items-center gap-3 border border-slate-200 bg-[#f8f5ee] px-4 py-3 text-sm font-semibold text-slate-800">
                   <input
                     type="checkbox"
                     checked={onlyAvailable}
@@ -381,7 +376,7 @@ export default function ServicesPage() {
             <div className="mt-10 grid gap-8 md:grid-cols-2 xl:grid-cols-3">
               {filteredTrips.map((trip) => (
                 <article key={trip.id} className="flex h-full flex-col border border-black/10 bg-white">
-                  <div className="aspect-[4/3] overflow-hidden">
+                  <div className="relative aspect-[4/3] overflow-hidden">
                     <OptimizedImage
                       src={trip.image}
                       alt={trip.title}
@@ -392,6 +387,7 @@ export default function ServicesPage() {
                       width="900"
                       height="600"
                     />
+                    <SaveRouteButton tripId={trip.id} tripTitle={trip.title} className="absolute right-3 top-3" />
                   </div>
                   <div className="flex flex-1 flex-col px-6 pb-8 pt-6">
                     <div className="flex flex-wrap items-center justify-between gap-3 text-[10px] font-bold uppercase tracking-[0.22em] text-slate-500">
@@ -409,10 +405,9 @@ export default function ServicesPage() {
                       </span>
                     </div>
 
-                    <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.18em] text-slate-700">
-                      <span className="bg-slate-100 px-3 py-1">{trip.style}</span>
-                      <span className="bg-slate-100 px-3 py-1">{trip.budgetTier}</span>
-                    </div>
+                    <p className="mt-4 text-xs font-semibold uppercase tracking-[0.16em] text-slate-600">
+                      {trip.style} &middot; {trip.budgetTier}
+                    </p>
 
                     <ul className="mt-6 flex flex-1 flex-col gap-3 text-sm leading-7 text-slate-700">
                       {trip.highlights.map((item) => (
@@ -474,13 +469,27 @@ export default function ServicesPage() {
           </div>
         </section>
 
-        <section className="bg-[#faf8ff] py-20 lg:py-24">
+        <section className="border-t border-black/10 bg-white py-20 lg:py-24">
+          <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">
+                Reviewed after the trip, not before it
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                Every quote below comes from a traveler who has already run one of these routes, and names the planner who
+                built it.
+              </p>
+            </div>
+            <Testimonials className="mt-10" count={3} startIndex={2} />
+          </div>
+        </section>
+
+        <section className="bg-[#f8f5ee] py-20 lg:py-24">
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="border-t-2 border-black bg-white p-10 md:p-14">
               <div className="flex flex-col gap-10 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-3xl">
-                  <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Custom route desk</p>
-                  <h2 className="font-editorial-display mt-4 text-4xl font-bold text-[#131b2e] sm:text-5xl">Need a route that starts here but does not end here?</h2>
+                  <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Need a route that starts here but does not end here?</h2>
                   <p className="mt-4 text-lg leading-8 text-slate-600">
                     Send your month, group size, and the islands you care about most. We will reshape the route, confirm what is actually available, and come back with a version that fits your timing.
                   </p>

@@ -1,11 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import AppLink from "../components/AppLink";
+import EditorialFooter from "../components/EditorialFooter";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
 import SiteHeader from "../components/SiteHeader";
+import TrustStats from "../components/TrustStats";
 import { CONTACT_ENDPOINT } from "../config";
 import { FEATURED_TRIPS } from "../data/featuredTrips";
-import { LEGAL_NAV } from "../data/legal";
 import { AVAILABILITY_LAST_UPDATED, TESTIMONIALS } from "../data/trust";
 import usePrefersReducedMotion from "../hooks/usePrefersReducedMotion";
 import {
@@ -68,7 +69,6 @@ export default function HomePage() {
     message: "Share your preferred destination and we will confirm the next planning step by email.",
   });
   const prefersReducedMotion = usePrefersReducedMotion();
-  const year = new Date().getFullYear();
   const baliTrip = FEATURED_TRIPS.find((item) => item.id === "bali-nusa-penida") ?? FEATURED_TRIPS[0] ?? null;
   const heroTrip = FEATURED_TRIPS.find((item) => item.id === "sumatra-java-volcano") ?? FEATURED_TRIPS[0] ?? null;
   const marineTrip =
@@ -155,32 +155,6 @@ export default function HomePage() {
     { value: "komodo-flores", label: "Komodo & Flores" },
     { value: marineTrip?.id || "raja-ampat", label: "Raja Ampat & Papua", trip: marineTrip },
     { value: heroTrip?.id || "java-sumatra", label: "Java & Sumatra", trip: heroTrip },
-  ];
-  const footerColumns = [
-    {
-      title: "Explore",
-      links: [
-        { label: "Featured routes", href: "#destinations" },
-        { label: "Full destinations page", href: "/platform.html" },
-        { label: "Luxury route planning", href: buildContactHref({ source: "home-footer", topic: "Luxury route planning" }) },
-      ],
-    },
-    {
-      title: "Planning",
-      links: [
-        { label: "Start consultation", href: "#consultation" },
-        { label: "WhatsApp desk", href: buildWhatsAppHref("Hello, I would like help planning an Indonesia trip.") },
-        { label: "Booking support", href: buildContactHref({ source: "home-footer", topic: "Booking support" }) },
-      ],
-    },
-    {
-      title: "Company",
-      links: [
-        { label: "Privacy Policy", href: LEGAL_NAV.find((item) => item.label === "Privacy")?.href ?? "/privacy.html" },
-        { label: "Terms of Service", href: LEGAL_NAV.find((item) => item.label === "Terms")?.href ?? "/terms.html" },
-        { label: "Partner with us", href: buildContactHref({ source: "home-footer", topic: "Partner with Us" }) },
-      ],
-    },
   ];
   const seoSchema = useMemo(() => {
     const pageUrl = buildAbsoluteUrl("");
@@ -342,6 +316,14 @@ export default function HomePage() {
 
   return (
     <Layout currentPage="home" renderHeader={false} renderFooter={false}>
+      <SiteHeader
+        currentPage="home"
+        variant="editorial"
+        ctaHref="#consultation"
+        ctaLabel="Start planning"
+        showCta={false}
+        brandSubtitle={null}
+      />
       <section id="hero" className="relative isolate overflow-hidden bg-[#0d0d0b] text-white">
         <div className="absolute inset-0 -z-20">
           <OptimizedImage
@@ -350,6 +332,8 @@ export default function HomePage() {
             className="h-full w-full scale-105 object-cover"
             loading="eager"
             fetchPriority="high"
+            webpSrcSet="photos/gallery-rice-terrace-768.webp 768w, photos/gallery-rice-terrace.webp 1080w"
+            sizes="100vw"
             width="1600"
             height="1066"
           />
@@ -372,27 +356,14 @@ export default function HomePage() {
             </video>
           </div>
         ) : null}
-        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/35 via-black/35 to-[#09090b]/95" aria-hidden />
-        <div className="absolute inset-x-0 bottom-0 -z-10 h-48 bg-gradient-to-t from-[#09090b] to-transparent" aria-hidden />
-        <div
-          className="absolute right-[-12rem] top-24 -z-10 h-80 w-80 rounded-full bg-[#ffdcc3]/10 blur-3xl"
-          aria-hidden="true"
-        />
-        <div
-          className="absolute left-[-8rem] top-40 -z-10 h-64 w-64 rounded-full bg-[#cee5ff]/10 blur-3xl"
-          aria-hidden="true"
-        />
+        <div className="absolute inset-0 -z-10 bg-gradient-to-b from-black/50 via-black/30 to-[#09090b]/92" aria-hidden />
+        {/* Left scrim: the headline is left-aligned, so darken behind the text column and let the
+            photograph stay bright toward the right where the route-in-focus card floats. */}
+        <div className="absolute inset-0 -z-10 bg-gradient-to-r from-black/45 via-black/10 to-transparent lg:from-black/55" aria-hidden />
+        <div className="absolute inset-x-0 bottom-0 -z-10 h-40 bg-gradient-to-t from-[#09090b] to-transparent" aria-hidden />
 
         <div className="relative z-10">
-          <SiteHeader
-            currentPage="home"
-            variant="editorial"
-            ctaHref="#consultation"
-            ctaLabel="Start planning"
-            showCta={false}
-            brandSubtitle={null}
-          />
-          <div className="mx-auto grid min-h-[calc(100vh-88px)] max-w-7xl gap-12 px-4 pb-16 pt-10 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:px-8 lg:pb-24">
+          <div className="mx-auto grid min-h-screen max-w-7xl gap-12 px-4 pb-16 pt-28 sm:px-6 lg:grid-cols-[minmax(0,1.05fr)_minmax(320px,0.95fr)] lg:px-8 lg:pb-24 lg:pt-32">
             <div className="flex flex-col justify-center py-8 lg:py-14">
               <span className="font-editorial-label mb-6 block text-xs uppercase tracking-[0.34em] text-white/80">
                 Private routes through the archipelago
@@ -404,7 +375,7 @@ export default function HomePage() {
                   how Indonesia actually moves
                 </span>
               </h1>
-              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/82 sm:text-xl sm:leading-9">
+              <p className="mt-6 max-w-2xl text-lg leading-8 text-white/80 sm:text-xl sm:leading-9">
                 The route is the product. We build Indonesia trips around real transfer timing, island pacing, and
                 live availability, then stay close once you are traveling.
               </p>
@@ -427,7 +398,7 @@ export default function HomePage() {
                 </AppLink>
               </div>
 
-              <div className="mt-10 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-[0.26em] text-white/78">
+              <div className="mt-10 flex flex-wrap gap-3 text-[11px] font-semibold uppercase tracking-[0.26em] text-white/80">
                 <span className="border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">Private departures</span>
                 <span className="border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">Real route timing</span>
                 <span className="border border-white/15 bg-white/10 px-4 py-3 backdrop-blur">Planner-led support</span>
@@ -460,7 +431,7 @@ export default function HomePage() {
                       <h2 className="font-editorial-display mt-3 text-3xl font-bold leading-tight text-white">
                         {routeInFocus.title}
                       </h2>
-                      <p className="mt-3 max-w-md text-sm leading-7 text-white/72">{routeInFocus.summary}</p>
+                      <p className="mt-3 max-w-md text-sm leading-7 text-white/70">{routeInFocus.summary}</p>
                       <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.22em]">
                         <span className="bg-white px-3 py-2 text-black">{routeInFocus.duration}</span>
                         <span className="border border-white/20 bg-white/10 px-3 py-2 text-white">
@@ -480,23 +451,11 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="bg-[#faf8ff] text-[#131b2e]">
+      <div className="bg-[#f8f5ee] text-[#131b2e]">
         <section id="trust" className="relative overflow-hidden bg-[#101826] py-24 text-white">
-          <div
-            className="absolute inset-y-0 left-[-10rem] w-80 rounded-full bg-[#ffdcc3]/10 blur-3xl"
-            aria-hidden="true"
-          />
-          <div
-            className="absolute bottom-[-8rem] right-[-10rem] h-80 w-80 rounded-full bg-[#cee5ff]/10 blur-3xl"
-            aria-hidden="true"
-          />
-
           <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
             <div className="border-t-2 border-[#ffdcc3] pt-8">
-              <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-white/60">
-                Why travelers trust us
-              </p>
-              <h2 className="font-editorial-display mt-4 text-4xl font-bold text-white sm:text-5xl">
+              <h2 className="font-editorial-display text-4xl font-bold text-white sm:text-5xl">
                 Planning strong enough for real travel days
               </h2>
               <p className="mt-5 max-w-2xl text-lg leading-8 text-white/75">
@@ -504,7 +463,9 @@ export default function HomePage() {
                 buffers, and a team that can still fix the route when conditions shift.
               </p>
 
-              <article className="mt-8 border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
+              <TrustStats tone="dark" className="mt-10" />
+
+              <article className="mt-10 border border-white/10 bg-white/5 p-6 backdrop-blur-sm">
                 <p className="font-editorial-serif text-2xl italic leading-9 text-white">
                   "{featuredTestimonial.quote}"
                 </p>
@@ -524,17 +485,14 @@ export default function HomePage() {
             <div className="border-b-2 border-black pb-8">
               <div className="flex flex-col gap-6 md:flex-row md:items-end md:justify-between">
                 <div className="max-w-3xl">
-                  <span className="font-editorial-label block text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">
-                    Featured destinations
-                  </span>
-                  <h2 className="font-editorial-display mt-3 text-4xl font-bold text-[#131b2e] sm:text-5xl">
+                  <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">
                     Same planning logic, three very different route moods
                   </h2>
                   <p className="mt-4 text-lg leading-8 text-slate-600">
                     The destinations page already does the heavier browse-and-filter job. Here, the goal is clearer:
                     show the kind of route logic we build and the range it can cover.
                   </p>
-                  <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-400">
+                  <p className="mt-3 text-xs font-semibold uppercase tracking-[0.18em] text-slate-600">
                     Availability updated {formatUpdatedDate(AVAILABILITY_LAST_UPDATED)}
                   </p>
                 </div>
@@ -577,7 +535,7 @@ export default function HomePage() {
                         <h3 className="font-editorial-display mt-4 text-4xl font-bold leading-tight text-white">
                           {leadDestination.trip.title}
                         </h3>
-                        <p className="mt-4 text-base leading-8 text-white/78">{leadDestination.kicker}</p>
+                        <p className="mt-4 text-base leading-8 text-white/80">{leadDestination.kicker}</p>
                         <p className="mt-6 text-sm font-semibold uppercase tracking-[0.16em] text-white/55">
                           {leadDestination.accent}
                         </p>
@@ -589,7 +547,7 @@ export default function HomePage() {
                           <span className="bg-white/10 px-3 py-2 text-white">{leadDestination.trip.region}</span>
                           <span className="bg-white/10 px-3 py-2 text-white">{leadDestination.trip.style}</span>
                         </div>
-                        <p className="mt-6 text-sm leading-7 text-white/72">{leadDestination.trip.summary}</p>
+                        <p className="mt-6 text-sm leading-7 text-white/70">{leadDestination.trip.summary}</p>
                         <div className="mt-6 flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-5">
                           <div>
                             <p className="font-editorial-label text-[10px] uppercase tracking-[0.24em] text-white/50">
@@ -599,7 +557,7 @@ export default function HomePage() {
                               {formatPrice(leadDestination.trip.priceFrom)}
                             </p>
                           </div>
-                          <div className="text-right text-sm text-white/72">
+                          <div className="text-right text-sm text-white/70">
                             <p>Next departure {formatDepartureDate(leadDestination.trip.nextDeparture)}</p>
                             <p>{formatAvailability(leadDestination.trip.seatsLeft)}</p>
                           </div>
@@ -649,7 +607,7 @@ export default function HomePage() {
                             <div className="mt-5 flex items-end justify-between gap-4">
                               <div>
                                 <p className="text-lg font-bold text-[#8d4b00]">{formatPrice(card.trip.priceFrom)}</p>
-                                <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-400">
+                                <p className="mt-1 text-xs uppercase tracking-[0.16em] text-slate-600">
                                   {formatAvailability(card.trip.seatsLeft)}
                                 </p>
                               </div>
@@ -669,10 +627,7 @@ export default function HomePage() {
             <div className="mt-10 grid gap-4 md:grid-cols-3">
               {planningPillars.map((item) => (
                 <article key={item.title} className="border border-black/20 bg-[#fcfaf5] p-6">
-                  <p className="font-editorial-label text-[10px] uppercase tracking-[0.24em] text-slate-500">
-                    Planning principle
-                  </p>
-                  <h3 className="mt-3 font-editorial-serif text-2xl font-bold text-[#131b2e]">{item.title}</h3>
+                  <h3 className="font-editorial-serif text-2xl font-bold text-[#131b2e]">{item.title}</h3>
                   <p className="mt-4 text-sm leading-7 text-slate-600">{item.description}</p>
                 </article>
               ))}
@@ -686,10 +641,7 @@ export default function HomePage() {
               <div className="grid gap-12 lg:grid-cols-[0.95fr_1.05fr]">
                 <div className="space-y-8">
                   <div>
-                    <span className="font-editorial-label block text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">
-                      Start the conversation
-                    </span>
-                    <h2 className="font-editorial-display mt-4 text-4xl font-bold leading-tight text-[#131b2e] sm:text-5xl">
+                    <h2 className="font-editorial-display text-4xl font-bold leading-tight text-[#131b2e] sm:text-5xl">
                       Start with the route you want,
                       <br />
                       <span className="font-editorial-serif italic text-[#8d4b00]">we map the version that works</span>
@@ -769,7 +721,7 @@ export default function HomePage() {
                           name="name"
                           type="text"
                           placeholder="Alexander Graham"
-                          className="w-full border border-transparent bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
+                          className="w-full border border-transparent bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
                           required
                         />
                       </label>
@@ -781,7 +733,7 @@ export default function HomePage() {
                           name="email"
                           type="email"
                           placeholder="alex@concierge.com"
-                          className="w-full border border-transparent bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
+                          className="w-full border border-transparent bg-white px-4 py-3 text-sm text-slate-900 placeholder:text-slate-500 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
                           required
                         />
                       </label>
@@ -789,17 +741,25 @@ export default function HomePage() {
                         <span className="font-editorial-label mb-2 block text-[10px] font-bold uppercase tracking-[0.24em] text-white/60">
                           Preferred destination
                         </span>
-                        <select
-                          name="destination"
-                          defaultValue={consultationOptions[0]?.value || ""}
-                          className="w-full appearance-none border border-transparent bg-white px-4 py-3 text-sm text-slate-900 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
-                        >
-                          {consultationOptions.map((option) => (
-                            <option key={option.value} value={option.value}>
-                              {option.label}
-                            </option>
-                          ))}
-                        </select>
+                        <span className="relative block">
+                          <select
+                            name="destination"
+                            defaultValue={consultationOptions[0]?.value || ""}
+                            className="w-full appearance-none border border-transparent bg-white py-3 pl-4 pr-10 text-sm text-slate-900 focus:border-[#ffdcc3] focus:outline-none focus:ring-2 focus:ring-[#ffdcc3]/20"
+                          >
+                            {consultationOptions.map((option) => (
+                              <option key={option.value} value={option.value}>
+                                {option.label}
+                              </option>
+                            ))}
+                          </select>
+                          <span
+                            className="material-symbols-outlined pointer-events-none absolute right-3 top-1/2 -translate-y-1/2 text-lg text-slate-500"
+                            aria-hidden="true"
+                          >
+                            expand_more
+                          </span>
+                        </span>
                       </label>
                       <button
                         className="mt-3 inline-flex w-full items-center justify-center bg-[#8d4b00] py-4 text-sm font-semibold uppercase tracking-[0.2em] text-white transition hover:bg-[#b15f00] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#ffdcc3] disabled:cursor-not-allowed disabled:opacity-70"
@@ -832,59 +792,7 @@ export default function HomePage() {
           </div>
         </section>
 
-        <footer className="border-t border-white/10 bg-[#131b2e] text-white">
-          <div className="mx-auto max-w-7xl px-4 py-16 sm:px-6 lg:px-8">
-            <div className="grid gap-10 border-b border-white/10 pb-12 md:grid-cols-2 lg:grid-cols-[1.2fr_0.8fr_0.8fr_0.8fr]">
-              <div className="max-w-md">
-                <p className="font-editorial-serif text-3xl font-bold tracking-tight text-[#ffdcc3]">Surga Indonesia Travel</p>
-                <p className="mt-5 text-sm leading-7 text-white/65">
-                  Private Indonesia routes with practical planning underneath them. Less brochure language, more route logic that actually survives the trip.
-                </p>
-                <div className="mt-6 flex gap-4 text-white/55">
-                  <a
-                    className="transition hover:text-white"
-                    href={buildWhatsAppHref("Hello, I would like to plan an Indonesia trip.")}
-                    aria-label="WhatsApp"
-                  >
-                    <span className="material-symbols-outlined">public</span>
-                  </a>
-                  <a className="transition hover:text-white" href="/platform.html" aria-label="Destinations">
-                    <span className="material-symbols-outlined">explore</span>
-                  </a>
-                  <a className="transition hover:text-white" href="mailto:hello@surgaindonesia.travel" aria-label="Email">
-                    <span className="material-symbols-outlined">mail</span>
-                  </a>
-                </div>
-              </div>
-
-              {footerColumns.map((column) => (
-                <div key={column.title}>
-                  <h3 className="font-editorial-label text-[10px] font-bold uppercase tracking-[0.24em] text-white/45">
-                    {column.title}
-                  </h3>
-                  <ul className="mt-5 space-y-4 text-sm text-white/65">
-                    {column.links.map((link) => (
-                      <li key={`${column.title}-${link.label}`}>
-                        <AppLink className="transition hover:text-[#ffdcc3]" href={link.href}>
-                          {link.label}
-                        </AppLink>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-
-            <div className="mt-6 flex flex-col gap-4 text-xs uppercase tracking-[0.18em] text-white/35 md:flex-row md:items-center md:justify-between">
-              <span>(c) {year} Surga Indonesia Travel. All rights reserved.</span>
-              <div className="flex gap-6 text-white/25">
-                <span className="material-symbols-outlined text-lg">verified</span>
-                <span className="material-symbols-outlined text-lg">travel_explore</span>
-                <span className="material-symbols-outlined text-lg">shield</span>
-              </div>
-            </div>
-          </div>
-        </footer>
+        <EditorialFooter conciergeTopic="Concierge: Home" />
       </div>
     </Layout>
   );

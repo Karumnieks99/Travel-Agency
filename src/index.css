@@ -8,8 +8,31 @@ html {
 
 body {
   font-family: "Inter", system-ui, -apple-system, "Segoe UI", sans-serif;
-  background-color: #faf8ff;
+  background-color: #f8f5ee;
   color: #131b2e;
+}
+
+/* Anchor targets land below the fixed header */
+[id] {
+  scroll-margin-top: 6.5rem;
+}
+
+h1,
+h2,
+h3 {
+  text-wrap: balance;
+}
+
+/* Keyboard fallback for elements without their own focus-visible styles */
+:focus-visible {
+  outline: 2px solid #8d4b00;
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
 }
 
 .material-symbols-outlined {
@@ -35,4 +58,13 @@ body {
 
 .shadow-editorial {
   box-shadow: 0 20px 40px rgba(19, 27, 46, 0.06);
+}
+
+@keyframes surga-drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
 }

@@ -1,6 +1,7 @@
 export const HOME_PATH = "/";
 export const HOME_ALIAS_PATH = "/index.html";
 export const TRIPS_PATH = "/platform.html";
+export const ABOUT_PATH = "/about.html";
 export const CONTACT_PATH = "/support.html";
 export const TRIP_PATH = "/trip.html";
 export const LEGAL_PATHS = {

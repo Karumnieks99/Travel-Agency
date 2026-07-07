@@ -10,6 +10,7 @@ export default defineConfig({
       input: {
         main: resolve(__dirname, "index.html"),
         platform: resolve(__dirname, "platform.html"),
+        about: resolve(__dirname, "about.html"),
         trip: resolve(__dirname, "trip.html"),
         support: resolve(__dirname, "support.html"),
         terms: resolve(__dirname, "terms.html"),
