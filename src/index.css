@@ -59,3 +59,12 @@ h3 {
 .shadow-editorial {
   box-shadow: 0 20px 40px rgba(19, 27, 46, 0.06);
 }
+
+@keyframes surga-drawer-in {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}

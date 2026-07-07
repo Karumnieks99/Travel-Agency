@@ -5,6 +5,7 @@ import { NAV_LINKS } from "../data/navigation";
 import { buildContactHref } from "../utils/urls";
 import AppLink from "./AppLink";
 import OptimizedImage from "./OptimizedImage";
+import SavedRoutesDrawer from "./SavedRoutesDrawer";
 
 export default function SiteHeader({
   currentPage,
@@ -143,9 +144,9 @@ export default function SiteHeader({
         : "sticky top-0 z-50 border-b border-white/10 bg-white/80 shadow-sm backdrop-blur";
 
   const logoTitleClass = isTrip
-    ? "font-editorial-serif text-2xl font-bold text-white"
+    ? "font-editorial-serif text-xl font-bold text-white sm:text-2xl"
     : isEditorial
-      ? "font-editorial-serif text-2xl font-bold tracking-tight text-[#f5efe4]"
+      ? "font-editorial-serif text-xl font-bold tracking-tight text-[#f5efe4] sm:text-2xl"
       : isOverlay
         ? "text-sm font-semibold tracking-tight text-white"
         : "text-sm font-semibold tracking-tight";
@@ -255,21 +256,23 @@ export default function SiteHeader({
             </>
           )}
         </AppLink>
-        {showMenuButton ? (
-          <button
-            ref={menuButtonRef}
-            type="button"
-            aria-expanded={navOpen}
-            aria-controls="primary-nav"
-            onClick={() => setNavOpen((open) => !open)}
-            className={menuButtonClass}
-          >
-            <span>Menu</span>
-            <span className="h-px w-5 bg-current" aria-hidden />
-          </button>
-        ) : null}
+        <div className="flex items-center gap-3">
+          <SavedRoutesDrawer tone={isTrip || isEditorial || isOverlay ? "dark" : "light"} />
+          {showMenuButton ? (
+            <button
+              ref={menuButtonRef}
+              type="button"
+              aria-expanded={navOpen}
+              aria-controls="primary-nav"
+              onClick={() => setNavOpen((open) => !open)}
+              className={menuButtonClass}
+            >
+              <span>Menu</span>
+              <span className="h-px w-5 bg-current" aria-hidden />
+            </button>
+          ) : null}
 
-        <nav ref={navRef} id="primary-nav" className={navShellClasses} hidden={navHidden}>
+          <nav ref={navRef} id="primary-nav" className={navShellClasses} hidden={navHidden}>
           <div className="mb-3 flex items-center justify-between gap-3 lg:hidden">
             <p className={navLabelClass}>Navigation</p>
             <button
@@ -304,7 +307,8 @@ export default function SiteHeader({
               {resolvedCtaLabel}
             </AppLink>
           ) : null}
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );

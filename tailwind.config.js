@@ -3,6 +3,7 @@ export default {
   content: [
     "./index.html",
     "./platform.html",
+    "./about.html",
     "./trip.html",
     "./support.html",
     "./terms.html",

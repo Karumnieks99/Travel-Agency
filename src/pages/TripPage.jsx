@@ -1,9 +1,12 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AppLink from "../components/AppLink";
+import EditorialFooter from "../components/EditorialFooter";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
+import SaveRouteButton from "../components/SaveRouteButton";
 import SiteHeader from "../components/SiteHeader";
+import Testimonials from "../components/Testimonials";
 import usePrefersReducedMotion from "../hooks/usePrefersReducedMotion";
 import { TRIP_OPTIONS } from "../data/trips";
 import { AVAILABILITY_LAST_UPDATED, BOOKING_CONFIDENCE_POINTS } from "../data/trust";
@@ -16,12 +19,7 @@ import {
   createWebPageSchema,
   usePageSeo,
 } from "../utils/seo";
-import {
-  LEGAL_PATHS,
-  TRIPS_PATH,
-  buildContactHref,
-  buildWhatsAppHref,
-} from "../utils/urls";
+import { TRIPS_PATH, buildContactHref, buildWhatsAppHref } from "../utils/urls";
 
 const USD_FORMATTER = new Intl.NumberFormat("en-US", {
   style: "currency",
@@ -33,7 +31,7 @@ const TRIP_EDITORIAL_META = {
   "bali-nusa-penida": {
     eyebrow: "Expedition / Bali Archipelago",
     headline: "BALI + NUSA PENIDA: THE SPIRIT OF THE ARCHIPELAGO",
-    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/gallery-rice-terrace.jpg", "photos/dest-lombok-gili.jpg"],
+    mediaPool: ["photos/dest-besakih-bali.jpg", "photos/gallery-rice-terrace.jpg"],
     bookingFeatures: [
       { icon: "bed", label: "Curated villa stays" },
       { icon: "verified", label: "Private local guiding" },
@@ -44,7 +42,7 @@ const TRIP_EDITORIAL_META = {
   "sumatra-java-volcano": {
     eyebrow: "Expedition / Sumatra + Java",
     headline: "SUMATRA + JAVA: VOLCANO SUNRISES & RAINFOREST TRACKS",
-    mediaPool: ["photos/gallery-rice-terrace.jpg", "photos/dest-kelimutu.jpg", "photos/gallery-flores-ridge.jpg"],
+    mediaPool: ["photos/dest-sumatra-java.jpg", "photos/gallery-rice-terrace.jpg", "photos/gallery-flores-ridge.jpg"],
     bookingFeatures: [
       { icon: "forest", label: "Wildlife-first pacing" },
       { icon: "hiking", label: "Sunrise trek planning" },
@@ -55,7 +53,7 @@ const TRIP_EDITORIAL_META = {
   "raja-ampat-liveaboard": {
     eyebrow: "Expedition / West Papua",
     headline: "RAJA AMPAT: A LIVEABOARD THROUGH THE BLUE LABYRINTH",
-    mediaPool: ["photos/dest-papua.jpg", "photos/dest-maluku.jpg"],
+    mediaPool: ["photos/dest-maluku.jpg"],
     bookingFeatures: [
       { icon: "sailing", label: "Crewed small-boat support" },
       { icon: "scuba_diving", label: "Reef and manta windows" },
@@ -66,7 +64,7 @@ const TRIP_EDITORIAL_META = {
   "borneo-river": {
     eyebrow: "Expedition / Kalimantan",
     headline: "BORNEO: RIVER DRIFTING INTO THE RAINFOREST",
-    mediaPool: ["photos/dest-sulawesi.jpg", "photos/gallery-rice-terrace.jpg"],
+    mediaPool: ["photos/dest-kalimantan.jpg", "photos/gallery-rice-terrace.jpg"],
     bookingFeatures: [
       { icon: "directions_boat", label: "Private klotok cruising" },
       { icon: "pets", label: "Ranger-led wildlife access" },
@@ -99,7 +97,7 @@ const TRIP_EDITORIAL_META = {
   "maluku-spice-isles": {
     eyebrow: "Expedition / Maluku",
     headline: "MALUKU: SPICE ISLES, FORTS & CLEAR WATER",
-    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/dest-lombok-gili.jpg"],
+    mediaPool: ["photos/dest-raja-ampat.jpg"],
     bookingFeatures: [
       { icon: "history_edu", label: "Heritage route design" },
       { icon: "waves", label: "Lagoon and reef days" },
@@ -110,7 +108,7 @@ const TRIP_EDITORIAL_META = {
   "sulawesi-highlands-togian": {
     eyebrow: "Expedition / Sulawesi",
     headline: "SULAWESI: HIGHLANDS TO TOGIAN REEFS",
-    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/gallery-rice-terrace.jpg"],
+    mediaPool: ["photos/dest-sulawesi.jpg", "photos/gallery-rice-terrace.jpg"],
     bookingFeatures: [
       { icon: "terrain", label: "Highland driver support" },
       { icon: "waves", label: "Private island boats" },
@@ -121,7 +119,7 @@ const TRIP_EDITORIAL_META = {
   "papua-highlands": {
     eyebrow: "Expedition / Papua",
     headline: "PAPUA: VALLEYS, VILLAGES & LAKE SENTANI",
-    mediaPool: ["photos/dest-raja-ampat.jpg", "photos/gallery-flores-ridge.jpg"],
+    mediaPool: ["photos/dest-papua.jpg", "photos/gallery-flores-ridge.jpg"],
     bookingFeatures: [
       { icon: "altitude", label: "Altitude-aware pacing" },
       { icon: "hiking", label: "Porter-supported trekking" },
@@ -453,7 +451,6 @@ function renderDayMedia(day, trip, index, mediaPool) {
 export default function TripPage() {
   const [searchParams] = useSearchParams();
   const tripId = searchParams.get("trip") || "";
-  const year = new Date().getFullYear();
 
   const trip = useMemo(() => TRIP_OPTIONS.find((item) => item.id === tripId) || null, [tripId]);
   const itinerary = trip?.itinerary || [];
@@ -607,32 +604,37 @@ export default function TripPage() {
   return (
     <Layout currentPage="trips" renderHeader={false} renderFooter={false}>
       <div className="bg-[#f8f5ee] text-[#131b2e] selection:bg-[#ffdcc3] selection:text-[#2f1500]">
-        <aside className="group fixed left-0 top-0 z-40 hidden h-screen w-16 flex-col items-center border-r border-[#887364]/20 bg-white py-8 transition-all duration-300 hover:w-64 xl:flex">
+        <nav
+          aria-label="Trip sections"
+          className="group fixed left-0 top-0 z-40 hidden h-screen w-16 flex-col items-center border-r border-[#887364]/20 bg-white py-8 transition-all duration-300 hover:w-64 xl:flex"
+        >
           <div className="mb-12">
-            <span className="material-symbols-outlined text-[#8d4b00]">explore</span>
+            <span className="material-symbols-outlined text-[#8d4b00]" aria-hidden="true">explore</span>
           </div>
           <div className="flex flex-1 flex-col gap-8 self-stretch">
             {SIDE_NAV_ITEMS.map((item, index) => (
               <a
                 key={item.label}
                 href={item.href}
+                aria-label={item.label}
+                title={item.label}
                 className={`flex items-center gap-4 py-2 pl-5 transition-all ${
                   index === 0
                     ? "bg-[#fff1e5] font-bold text-[#8d4b00]"
                     : "text-[#565e74] hover:bg-[#f5f1e8] hover:text-[#131b2e]"
                 }`}
               >
-                <span className="material-symbols-outlined">{item.icon}</span>
+                <span className="material-symbols-outlined" aria-hidden="true">{item.icon}</span>
                 <span className="hidden text-xs font-semibold uppercase tracking-[0.2em] group-hover:block">{item.label}</span>
               </a>
             ))}
           </div>
           <div className="mt-auto group-hover:px-4">
-            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ffdcc3] text-[10px] font-bold uppercase text-[#6e3900]">
+            <div className="flex h-8 w-8 items-center justify-center rounded-full bg-[#ffdcc3] text-[10px] font-bold uppercase text-[#6e3900]" aria-hidden="true">
               ST
             </div>
           </div>
-        </aside>
+        </nav>
 
         <main className="relative">
           <SiteHeader currentPage="trips" variant="editorial" showCta={false} brandSubtitle={null} forceLightNav />
@@ -649,6 +651,9 @@ export default function TripPage() {
                 height="1066"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              {/* Center scrim: the headline is vertically centered, so concentrate darkening behind it
+                  (keeps the photo bright at the edges instead of flattening the whole frame). */}
+              <div className="absolute inset-0 bg-[radial-gradient(65%_55%_at_50%_45%,rgba(0,0,0,0.55),transparent_75%)]" />
             </div>
 
             <div className="relative z-10 flex h-full items-center justify-center">
@@ -693,6 +698,19 @@ export default function TripPage() {
                   {trip.summary}
                 </h2>
                 <p className="mt-6 max-w-3xl text-lg leading-relaxed text-[#565e74]">{trip.details}</p>
+                {trip.bestTime ? (
+                  <div className="mt-8 flex max-w-3xl items-start gap-4 border-t border-black/15 pt-6">
+                    <span className="material-symbols-outlined text-[#8d4b00]" aria-hidden="true">
+                      calendar_today
+                    </span>
+                    <div>
+                      <p className="font-editorial-label text-[10px] font-bold uppercase tracking-[0.24em] text-[#565e74]">
+                        When to go
+                      </p>
+                      <p className="mt-1 text-lg leading-relaxed text-[#131b2e]">{trip.bestTime}</p>
+                    </div>
+                  </div>
+                ) : null}
               </section>
 
               <section id="trip-itinerary" className="space-y-20 lg:space-y-28">
@@ -808,6 +826,12 @@ export default function TripPage() {
                   >
                     WhatsApp Concierge
                   </a>
+                  <SaveRouteButton
+                    tripId={trip.id}
+                    tripTitle={trip.title}
+                    variant="inline"
+                    className="mt-3 w-full"
+                  />
                   <p className="font-editorial-label mt-6 text-center text-[10px] uppercase tracking-[0.2em] text-white/60">
                     Estimated response: 2 hours
                   </p>
@@ -840,42 +864,21 @@ export default function TripPage() {
           </div>
         </main>
 
-        <footer className="mt-24 border-t border-white/10 bg-[#131b2e] px-6 py-12 xl:pl-28 xl:pr-12 xl:py-16">
-          <div className="mx-auto flex max-w-screen-2xl flex-col items-center justify-between gap-8 md:flex-row">
-            <div>
-              <span className="font-editorial-serif text-2xl font-bold tracking-tight text-[#ffdcc3]">Surga Indonesia Travel</span>
+        <section className="border-t border-black/10 bg-white px-6 py-16 xl:pl-28 xl:pr-12 xl:py-20">
+          <div className="mx-auto max-w-screen-2xl">
+            <div className="max-w-3xl">
+              <p className="font-editorial-label text-xs font-bold uppercase tracking-[0.28em] text-[#8d4b00]">
+                Recent travelers
+              </p>
+              <h2 className="font-editorial-serif mt-4 text-3xl font-bold leading-tight text-[#131b2e] md:text-4xl">
+                Planned by the same desk you would work with
+              </h2>
             </div>
-            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-1">
-              <AppLink
-                href={LEGAL_PATHS.privacy}
-                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
-              >
-                Privacy
-              </AppLink>
-              <AppLink
-                href={LEGAL_PATHS.terms}
-                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
-              >
-                Terms
-              </AppLink>
-              <AppLink
-                href={buildContactHref({ source: "trip-footer", topic: `Concierge: ${trip.title}` })}
-                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
-              >
-                Concierge
-              </AppLink>
-              <AppLink
-                href={buildContactHref({ source: "trip-footer" })}
-                className="inline-flex items-center px-1 py-2 text-xs uppercase tracking-[0.18em] text-white/65 transition hover:text-[#ffdcc3]"
-              >
-                Contact
-              </AppLink>
-            </div>
-            <div className="text-xs uppercase tracking-[0.18em] text-white/55">
-              (c) {year} SURGA INDONESIA TRAVEL. ALL RIGHTS RESERVED.
-            </div>
+            <Testimonials className="mt-10" count={3} startIndex={1} />
           </div>
-        </footer>
+        </section>
+
+        <EditorialFooter conciergeTopic={`Concierge: ${trip.title}`} />
       </div>
     </Layout>
   );

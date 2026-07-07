@@ -1,6 +1,7 @@
 import React, { Suspense, lazy } from "react";
 import { Navigate, Route, Routes } from "react-router-dom";
 import {
+  ABOUT_PATH,
   CONTACT_PATH,
   HOME_ALIAS_PATH,
   HOME_PATH,
@@ -14,6 +15,7 @@ import {
 import HomePage from "./pages/HomePage";
 
 const ServicesPage = lazy(() => import("./pages/ServicesPage"));
+const AboutPage = lazy(() => import("./pages/AboutPage"));
 const ContactPage = lazy(() => import("./pages/ContactPage"));
 const TripPage = lazy(() => import("./pages/TripPage"));
 const LegalPage = lazy(() => import("./pages/LegalPage"));
@@ -25,6 +27,7 @@ export default function App() {
         <Route path={HOME_PATH} element={<HomePage />} />
         <Route path={HOME_ALIAS_PATH} element={<Navigate to={HOME_PATH} replace />} />
         <Route path={TRIPS_PATH} element={<ServicesPage />} />
+        <Route path={ABOUT_PATH} element={<AboutPage />} />
         <Route path={CONTACT_PATH} element={<ContactPage />} />
         <Route path={TRIP_PATH} element={<TripPage />} />
         <Route path={LEGAL_PATHS.terms} element={<LegalPage pageKey="terms" />} />

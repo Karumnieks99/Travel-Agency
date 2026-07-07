@@ -2,6 +2,7 @@ import React, { useMemo, useState } from "react";
 import { useSearchParams } from "react-router-dom";
 import AppLink from "../components/AppLink";
 import EditorialFooter from "../components/EditorialFooter";
+import FaqAccordion from "../components/FaqAccordion";
 import Layout from "../components/Layout";
 import OptimizedImage from "../components/OptimizedImage";
 import SiteHeader from "../components/SiteHeader";
@@ -238,8 +239,7 @@ export default function ContactPage() {
           <div className="mx-auto grid max-w-7xl gap-8 px-4 sm:px-6 lg:grid-cols-[1.02fr_0.98fr] lg:px-8">
             <div className="space-y-8">
               <div>
-                <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Visit or call</p>
-                <h2 className="font-editorial-display mt-4 text-4xl font-bold text-[#131b2e] sm:text-5xl">Planning desk and office details</h2>
+                <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Planning desk and office details</h2>
                 <p className="mt-4 max-w-2xl text-lg leading-8 text-slate-600">
                   Walk in or call ahead. One desk handles new requests, and one operations line stays focused on travelers already moving between islands.
                 </p>
@@ -288,10 +288,10 @@ export default function ContactPage() {
                 <div className="border border-black/10 bg-white p-5">
                   <h3 className="font-editorial-serif text-xl font-bold text-[#131b2e]">Payments</h3>
                   <ul className="mt-4 space-y-3 text-sm leading-7 text-slate-700">
-                    <li><span className="font-semibold text-slate-900">Bank</span>: Bank Central Asia (BCA)</li>
-                    <li><span className="font-semibold text-slate-900">Account</span>: PT Surga Indonesia Travel</li>
-                    <li><span className="font-semibold text-slate-900">IBAN</span>: 1234 5678 9012</li>
-                    <li><span className="font-semibold text-slate-900">Notes</span>: Invoices are issued in IDR or USD, with verified payment links available on request.</li>
+                    <li><span className="font-semibold text-slate-900">Registered to</span>: PT Surga Indonesia Travel</li>
+                    <li><span className="font-semibold text-slate-900">Bank</span>: Bank Central Asia (BCA), Indonesia</li>
+                    <li><span className="font-semibold text-slate-900">Transfer details</span>: Full account and reference numbers are issued on your deposit invoice, never over email.</li>
+                    <li><span className="font-semibold text-slate-900">Currencies</span>: Invoices in IDR or USD, with verified payment links available on request.</li>
                     <li><span className="font-semibold text-slate-900">Booking flow</span>: Dates and rates are only locked after planner confirmation.</li>
                   </ul>
                 </div>
@@ -328,7 +328,6 @@ export default function ContactPage() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="grid gap-10 lg:grid-cols-[0.9fr_1.1fr] lg:items-start">
               <div className="space-y-5">
-                <p className="font-editorial-label text-[10px] uppercase tracking-[0.3em] text-[#8d4b00]">Write to us</p>
                 <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">Send the rough shape of the trip</h2>
                 <p className="text-lg leading-8 text-slate-600">
                   Dates, group size, and the islands you care about most are enough to start. We confirm live availability and exact pricing before anything is locked.
@@ -455,6 +454,20 @@ export default function ContactPage() {
                 </p>
               </form>
             </div>
+          </div>
+        </section>
+
+        <section className="border-t border-black/10 bg-white py-20 lg:py-24">
+          <div className="mx-auto max-w-4xl px-4 sm:px-6 lg:px-8">
+            <div className="max-w-3xl">
+              <h2 className="font-editorial-display text-4xl font-bold text-[#131b2e] sm:text-5xl">
+                Questions we hear most
+              </h2>
+              <p className="mt-4 text-lg leading-8 text-slate-600">
+                A few things worth knowing before you send the first message. Anything else, ask us directly.
+              </p>
+            </div>
+            <FaqAccordion className="mt-10" />
           </div>
         </section>
 
